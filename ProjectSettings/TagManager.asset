@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - CircleTile
+  - DiamondTile
+  - HexagonTile
+  - PolygonTile
+  - SquareTile
+  - TriangleTile
   layers:
   - Default
   - TransparentFX

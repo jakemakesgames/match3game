@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1674947217}
   m_Layer: 0
   m_Name: PolygonTile
-  m_TagString: Untagged
+  m_TagString: PolygonTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -75,6 +75,7 @@ MonoBehaviour:
   row: 0
   targetX: 0
   targetY: 0
+  isMatched: 0
   swipeAngle: 0
   tileMoveSpeed: 0.4
 --- !u!1 &2935398210360529520
