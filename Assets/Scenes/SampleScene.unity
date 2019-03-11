@@ -225,8 +225,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 7
   height: 10
-  tilePrefab: {fileID: 859015979769944645, guid: 1d3470736960ff341a4f3b79ad4ebd4b,
+  backgroundTilePrefab: {fileID: 859015979769944645, guid: 1d3470736960ff341a4f3b79ad4ebd4b,
     type: 3}
+  tiles:
+  - {fileID: 3243907077133750565, guid: 9cc3cce4a0af266448cbcdc276cf3c2b, type: 3}
+  - {fileID: 3239966394059518891, guid: 586a28d50c9cdb149803772e1db07b07, type: 3}
+  - {fileID: 6111634972526330764, guid: 61e3522fdd0dc7b4eba96a6756795b0d, type: 3}
+  - {fileID: 48000571917110242, guid: 2d47b469b228e1d41b2210fd804771b7, type: 3}
+  - {fileID: 3262339209531394532, guid: 306d039e837a77b419dbe57234df17e3, type: 3}
+  - {fileID: 6036299159938204525, guid: ed710e3f1f9f9b442a78c5d7189f0115, type: 3}
 --- !u!4 &1766545131
 Transform:
   m_ObjectHideFlags: 0
