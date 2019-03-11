@@ -23,6 +23,7 @@ public class ShapeTile : MonoBehaviour
     private Vector2 finalTouchPosition;
     private Vector2 tempPosition;
     public float swipeAngle = 0.0f;
+    public float swipeResist = 1f;
 
     public float tileMoveSpeed;
 
@@ -103,10 +104,13 @@ public class ShapeTile : MonoBehaviour
 
     void CalculateAngle()
     {
-        swipeAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x) * 180/ Mathf.PI;
-        Debug.Log(swipeAngle);
-        // Call the MovePieces function
-        MovePieces();
+        if (Mathf.Abs(finalTouchPosition.y - firstTouchPosition.y) > swipeResist || Mathf.Abs(finalTouchPosition.x - firstTouchPosition.x) > swipeResist)
+        {
+            swipeAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x) * 180 / Mathf.PI;
+            // Debug.Log(swipeAngle);
+            // Call the MovePieces function
+            MovePieces();
+        }  
     }
 
     void MovePieces()
