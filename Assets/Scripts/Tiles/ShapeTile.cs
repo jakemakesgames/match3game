@@ -194,12 +194,16 @@ public class ShapeTile : MonoBehaviour
             // only if this isnt the column on the far right
             GameObject rightTile1 = board.allShapeTiles[column + 1, row];
             // Check to see if the left and right tile's tag is equal to this gameObjects tag, if it is - do the thing
-            if(leftTile1.tag == this.gameObject.tag && rightTile1.tag == this.gameObject.tag)
+
+            if (leftTile1 != null && rightTile1 != null)
             {
-                // This tile, as well as the left and right tiles are now matched
-                isMatched = true;
-                leftTile1.GetComponent<ShapeTile>().isMatched = true;
-                rightTile1.GetComponent<ShapeTile>().isMatched = true;
+                if (leftTile1.tag == this.gameObject.tag && rightTile1.tag == this.gameObject.tag)
+                {
+                    // This tile, as well as the left and right tiles are now matched
+                    isMatched = true;
+                    leftTile1.GetComponent<ShapeTile>().isMatched = true;
+                    rightTile1.GetComponent<ShapeTile>().isMatched = true;
+                }
             }
         }
 
@@ -217,12 +221,16 @@ public class ShapeTile : MonoBehaviour
             // only if this isnt the column on the far right
             GameObject downTile1 = board.allShapeTiles[column, row - 1];
             // Check to see if the left and right tile's tag is equal to this gameObjects tag, if it is - do the thing
-            if (upTile1.tag == this.gameObject.tag && downTile1.tag == this.gameObject.tag)
+
+            if (upTile1 != null && downTile1 != null)
             {
-                // This tile, as well as the left and right tiles are now matched
-                isMatched = true;
-                upTile1.GetComponent<ShapeTile>().isMatched = true;
-                downTile1.GetComponent<ShapeTile>().isMatched = true;
+                if (upTile1.tag == this.gameObject.tag && downTile1.tag == this.gameObject.tag)
+                {
+                    // This tile, as well as the left and right tiles are now matched
+                    isMatched = true;
+                    upTile1.GetComponent<ShapeTile>().isMatched = true;
+                    downTile1.GetComponent<ShapeTile>().isMatched = true;
+                }
             }
         }
         #endregion

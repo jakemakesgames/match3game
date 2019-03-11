@@ -43,6 +43,21 @@ public class Board : MonoBehaviour
                 backgroundTile.name = " background tile ( " + i + " , " + j + " )";
                 // choose a random number between 0 and the amount of shapeTiles in the array
                 int tileToUse = Random.Range(0, shapeTiles.Length);
+
+                // make sure the while loop doesnt become infinite
+                int maxIterations = 0;
+
+                // Check to see if there are matches, if there are, choose a different shape tile
+                while (MatchesAt(i, j, shapeTiles[tileToUse]) && maxIterations < 100)
+                {
+                    // Choose a new tile to instantiate
+                    tileToUse = Random.Range(0, shapeTiles.Length);
+                    // Increase the maxIterations by 1
+                    maxIterations++;
+                }
+                // Reset maxIterations
+                maxIterations = 0;
+
                 // Instantiate a random tile from the array (based off the tileToUse result) at this shapeTiles position with no rotation
                 GameObject shapeTile = Instantiate(shapeTiles[tileToUse], tempPosition, Quaternion.identity) as GameObject;
                 // Set the Parent object of the tile to the BackgroundTile GameObject
@@ -54,5 +69,44 @@ public class Board : MonoBehaviour
 
             }
         }
+    }
+
+    private bool MatchesAt(int column, int row, GameObject piece)
+    {
+        // if column AND row is greater than 1
+        if (column > 1 && row > 1)
+        {
+            // if the shape tile 1 and 2 has the same tag as this tile - return true (we've got a match)
+            if (allShapeTiles[column - 1, row].tag == piece.tag && allShapeTiles[column - 2, row].tag == piece.tag)
+            {
+                return true;
+            }
+            // if the shape tile 1 and 2 has the same tag as this tile - return true (we've got a match)
+            if (allShapeTiles[column, row - 1].tag == piece.tag && allShapeTiles[column, row - 2].tag == piece.tag)
+            {
+                return true;
+            }
+        }
+        else if (column <= 1 || row <= 1)
+        {
+            if (row > 1)
+            {
+                // Check tiles below
+                if (allShapeTiles[column, row - 1].tag == piece.tag && allShapeTiles[column, row - 2].tag == piece.tag)
+                {
+                    return true;
+                }
+            }
+            if (column > 1)
+            {
+                // Check tiles below
+                if (allShapeTiles[column -1, row].tag == piece.tag && allShapeTiles[column -2, row].tag == piece.tag)
+                {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
     }
 }
