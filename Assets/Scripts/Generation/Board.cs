@@ -138,5 +138,33 @@ public class Board : MonoBehaviour
                 }
             }
         }
+        StartCoroutine(DecreaseRowCo());
+    }
+
+    // Create a coroutine to collapse row
+    private IEnumerator DecreaseRowCo()
+    {
+        int nullCount = 0;
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                
+                if (allShapeTiles[i, j] == null)
+                {
+                    nullCount++;
+                }
+                // if the null count is greater than 0
+                else if (nullCount > 0)
+                {
+                    // get all of the tiles in the array and decrease their row by the nullCount value
+                    allShapeTiles[i, j].GetComponent<ShapeTile>().row -= nullCount;
+                    allShapeTiles[i, j] = null;
+                }
+            }
+            nullCount = 0;
+        }
+
+        yield return new WaitForSeconds(.4f);
     }
 }

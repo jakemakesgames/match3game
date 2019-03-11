@@ -60,13 +60,16 @@ public class ShapeTile : MonoBehaviour
             // Move Towards Target
             tempPosition = new Vector2(targetX, transform.position.y);
             transform.position = Vector2.Lerp(transform.position, tempPosition, tileMoveSpeed);
+            if (board.allShapeTiles[column, row] != this.gameObject)
+            {
+                board.allShapeTiles[column, row] = this.gameObject;
+            }
         }
         else
         {
             // Directly Set Position
             tempPosition = new Vector2(targetX, transform.position.y);
             transform.position = tempPosition;
-            board.allShapeTiles[column, row] = this.gameObject;
         }
         #endregion
 
@@ -76,13 +79,16 @@ public class ShapeTile : MonoBehaviour
             // Move Towards Target
             tempPosition = new Vector2(transform.position.x, targetY);
             transform.position = Vector2.Lerp(transform.position, tempPosition, tileMoveSpeed);
+            if (board.allShapeTiles[column, row] != this.gameObject)
+            {
+                board.allShapeTiles[column, row] = this.gameObject;
+            }
         }
         else
         {
             // Directly Set Position
             tempPosition = new Vector2(transform.position.x, targetY);
             transform.position = tempPosition;
-            board.allShapeTiles[column, row] = this.gameObject;
         }
         #endregion
     }
