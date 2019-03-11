@@ -54,6 +54,7 @@ public class Board : MonoBehaviour
                     tileToUse = Random.Range(0, shapeTiles.Length);
                     // Increase the maxIterations by 1
                     maxIterations++;
+                    Debug.Log(maxIterations);
                 }
                 // Reset maxIterations
                 maxIterations = 0;
