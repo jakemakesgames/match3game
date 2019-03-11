@@ -71,7 +71,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13f27bb1ecdf34a439ed8ab4ab127f5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  column: 0
+  row: 0
+  targetX: 0
+  targetY: 0
   swipeAngle: 0
+  tileMoveSpeed: 0.4
 --- !u!1 &6021864373653893392
 GameObject:
   m_ObjectHideFlags: 0

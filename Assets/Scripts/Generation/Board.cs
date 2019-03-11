@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class Board : MonoBehaviour
 {
+    // The width of the board
     public int width;
+    // The height of the board
     public int height;
+    // The Background tile to be instantiated
     public GameObject backgroundTilePrefab;
+    // The shape tiles to be instantiated
     public GameObject[] shapeTiles;
+    // An array of all of the background tiles
     private BackgroundTile[,] allBGTiles;
+    // An array of all of the shape tiles
     public GameObject[,] allShapeTiles;
 
     void Start()
