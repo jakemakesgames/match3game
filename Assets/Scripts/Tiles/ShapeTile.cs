@@ -4,19 +4,18 @@ using UnityEngine;
 
 public class ShapeTile : MonoBehaviour
 {
-    // The column and row of this ShapeTile
-    public int column;
-    public int row;
-
+    [Header("Board Variables")] 
+    public int column; // The Colomn Coordinate of this Tile
+    public int row; // The Row Coordinate of this Tile
+    public int previousColumn; // The previous Column Coordinate
+    public int previousRow; // The previous Row Coordinate
     // Ints to *actually* move the pieces around
     public int targetX;
     public int targetY;
-
+    // Check if it's matched
     public bool isMatched = false;
-
     // A reference to the Board Object
     private Board board;
-
     private GameObject otherShapeTile;
 
     // Handling Player Touch positions
@@ -31,13 +30,14 @@ public class ShapeTile : MonoBehaviour
     {
         // Set the board component equal to the GameObject in the scene with the Board script attached
         board = FindObjectOfType<Board>();
-
         // Set the targetX and targetY values as this GameObjects X and Y positions (cast into a int)
         targetX = (int)transform.position.x;
         targetY = (int)transform.position.y;
         // Set the row and column
         column = targetX;
         row = targetY;
+        previousRow = row;
+        previousColumn = column;
     }
 
     void Update()
@@ -111,7 +111,7 @@ public class ShapeTile : MonoBehaviour
 
     void MovePieces()
     {
-        if (swipeAngle > -45 && swipeAngle <= 45 && column < board.width)
+        if (swipeAngle > -45 && swipeAngle <= 45 && column < board.width -1)
         {
             // Right Swipe
             // Grab the shapeTile to the right of this tile and plus 1 to its column
@@ -121,7 +121,7 @@ public class ShapeTile : MonoBehaviour
             // Set this Tiles colum to +1
             column += 1;
         }
-        else if (swipeAngle > 45 && swipeAngle <= 135 && row < board.height )
+        else if (swipeAngle > 45 && swipeAngle <= 135 && row < board.height -1)
         {
             // Up Swipe
             // Grab the shapeTile to the right of this tile and plus 1 to its column
@@ -150,6 +150,29 @@ public class ShapeTile : MonoBehaviour
             otherShapeTile.GetComponent<ShapeTile>().row += 1;
             // Set this Tiles colum to +1
             row -= 1;
+        }
+        // Start the CheckMoveCo coroutine
+        StartCoroutine(CheckMoveCo());
+    }
+
+    public IEnumerator CheckMoveCo()
+    {
+        // Wait for 5 seconds
+        yield return new WaitForSeconds(.2f);
+        // Check to see if this Shape or another is matched
+        if (otherShapeTile != null)
+        {
+            // if our current shape tile AND the other shape tile isn't matched - do the thing
+            if (!isMatched && !otherShapeTile.GetComponent<ShapeTile>().isMatched)
+            {
+                // Set the other shape tiles position to this tiles position
+                otherShapeTile.GetComponent<ShapeTile>().row = row;
+                otherShapeTile.GetComponent<ShapeTile>().column = column;
+                // Set this tiles row and tile position to its previous position
+                row = previousRow;
+                column = previousColumn;
+            }
+            otherShapeTile = null;
         }
     }
 
