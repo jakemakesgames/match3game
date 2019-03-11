@@ -110,4 +110,33 @@ public class Board : MonoBehaviour
         
         return false;
     }
+
+    private void DestroyMatchesAt(int column, int row)
+    {
+        // Destroy matches at position
+        // Check if shape is matched, destroy
+        if (allShapeTiles[column, row].GetComponent<ShapeTile>().isMatched)
+        {
+            // Destroy the correct tile at the column and row position
+            Destroy(allShapeTiles[column, row]);
+            // Set that coord to null (leaving it empty)
+            allShapeTiles[column, row] = null;
+        }
+    }
+
+    public void DestroyMatches()
+    {
+        // Cycle through all of the columns
+        for (int i = 0; i < width; i++)
+        {
+            // Cycle through all the rows
+            for (int j = 0; j < height; j++)
+            {
+                if (allShapeTiles[i, j] != null)
+                {
+                    DestroyMatchesAt(i, j);
+                }
+            }
+        }
+    }
 }

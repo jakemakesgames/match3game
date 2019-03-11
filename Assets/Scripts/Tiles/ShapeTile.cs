@@ -176,6 +176,10 @@ public class ShapeTile : MonoBehaviour
                 row = previousRow;
                 column = previousColumn;
             }
+            else
+            {
+                board.DestroyMatches();
+            }
             otherShapeTile = null;
         }
     }
