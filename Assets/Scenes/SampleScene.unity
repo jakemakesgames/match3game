@@ -227,7 +227,7 @@ MonoBehaviour:
   height: 10
   backgroundTilePrefab: {fileID: 859015979769944645, guid: 1d3470736960ff341a4f3b79ad4ebd4b,
     type: 3}
-  tiles:
+  shapeTiles:
   - {fileID: 3243907077133750565, guid: 9cc3cce4a0af266448cbcdc276cf3c2b, type: 3}
   - {fileID: 3239966394059518891, guid: 586a28d50c9cdb149803772e1db07b07, type: 3}
   - {fileID: 6111634972526330764, guid: 61e3522fdd0dc7b4eba96a6756795b0d, type: 3}

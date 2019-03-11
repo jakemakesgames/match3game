@@ -7,13 +7,14 @@ public class Board : MonoBehaviour
     public int width;
     public int height;
     public GameObject backgroundTilePrefab;
-    public GameObject[] tiles;
-    private BackgroundTile[,] allTiles;
+    public GameObject[] shapeTiles;
+    private BackgroundTile[,] allBGTiles;
+    public GameObject[,] allShapeTiles;
 
     void Start()
     {
-        // Tell the allTiles arrway how big it needs to be 
-        allTiles = new BackgroundTile[width, height];
+        allBGTiles = new BackgroundTile[width, height];
+        allShapeTiles = new GameObject[width, height];
         // Call the SetUp function
         SetUp();
     }
@@ -34,14 +35,16 @@ public class Board : MonoBehaviour
                 backgroundTile.transform.parent = this.transform;
                 // Set the name of each background tile equal to their width and height position on the grid
                 backgroundTile.name = " background tile ( " + i + " , " + j + " )";
-                // choose a random number between 0 and the amount of tiles in the array
-                int tileToUse = Random.Range(0, tiles.Length);
-                // Instantiate a random tile from the array (based off the tileToUse result) at this tiles position with no rotation
-                GameObject tile = Instantiate(tiles[tileToUse], tempPosition, Quaternion.identity) as GameObject;
+                // choose a random number between 0 and the amount of shapeTiles in the array
+                int tileToUse = Random.Range(0, shapeTiles.Length);
+                // Instantiate a random tile from the array (based off the tileToUse result) at this shapeTiles position with no rotation
+                GameObject shapeTile = Instantiate(shapeTiles[tileToUse], tempPosition, Quaternion.identity) as GameObject;
                 // Set the Parent object of the tile to the BackgroundTile GameObject
-                tile.transform.parent = this.transform;
+                shapeTile.transform.parent = this.transform;
                 // Set the name of each background tile equal to their width and height position on the grid
-                tile.name = "shape tile ( " + i + " , " + j + " )";
+                shapeTile.name = "shape tile ( " + i + " , " + j + " )";
+                
+                allShapeTiles[i, j] = shapeTile;
 
             }
         }
