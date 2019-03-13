@@ -8,6 +8,8 @@ public class Board : MonoBehaviour
     public int width;
     // The height of the board
     public int height;
+    // The offset which the tiles are being created
+    public int offSet;
     // The Background tile to be instantiated
     public GameObject backgroundTilePrefab;
     // The shape tiles to be instantiated
@@ -34,7 +36,7 @@ public class Board : MonoBehaviour
             for (int j = 0; j < height; j++)
             {
                 // Create a new temporary variable - a Vector2 for the W & H pos
-                Vector2 tempPosition = new Vector2(i, j);
+                Vector2 tempPosition = new Vector2(i, j + offSet);
                 // Instantiate the backgroundTilePrefab as a GameObject
                 GameObject backgroundTile = Instantiate(backgroundTilePrefab, tempPosition, Quaternion.identity) as GameObject;
                 // Set the Parent object of the backgroundTile to the Board GameObject
@@ -61,6 +63,12 @@ public class Board : MonoBehaviour
 
                 // Instantiate a random tile from the array (based off the tileToUse result) at this shapeTiles position with no rotation
                 GameObject shapeTile = Instantiate(shapeTiles[tileToUse], tempPosition, Quaternion.identity) as GameObject;
+
+                // get the ShapeTile script on the tile and set the row to j
+                shapeTile.GetComponent<ShapeTile>().row = j;
+                // get the ShapeTile script on the tile and set the column to i
+                shapeTile.GetComponent<ShapeTile>().column = i;
+
                 // Set the Parent object of the tile to the BackgroundTile GameObject
                 shapeTile.transform.parent = this.transform;
                 // Set the name of each background tile equal to their width and height position on the grid
@@ -184,10 +192,12 @@ public class Board : MonoBehaviour
                 if (allShapeTiles[i, j] == null)
                 {
                     // Instantiate a new tile in it's place
-                    Vector2 tempPosition = new Vector2(i, j);
+                    Vector2 tempPosition = new Vector2(i, j + offSet);
                     int tileToUse = Random.Range(0, shapeTiles.Length);
                     GameObject piece = Instantiate(shapeTiles[tileToUse], tempPosition, Quaternion.identity);
                     allShapeTiles[i, j] = piece;
+                    piece.GetComponent<ShapeTile>().row = j;
+                    piece.GetComponent<ShapeTile>().column = i;
                 }
             }
         }

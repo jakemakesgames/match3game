@@ -9,6 +9,7 @@ public class ShapeTile : MonoBehaviour
     public int row; // The Row Coordinate of this Tile
     public int previousColumn; // The previous Column Coordinate
     public int previousRow; // The previous Row Coordinate
+
     // Ints to *actually* move the pieces around
     public int targetX;
     public int targetY;
@@ -32,13 +33,13 @@ public class ShapeTile : MonoBehaviour
         // Set the board component equal to the GameObject in the scene with the Board script attached
         board = FindObjectOfType<Board>();
         // Set the targetX and targetY values as this GameObjects X and Y positions (cast into a int)
-        targetX = (int)transform.position.x;
-        targetY = (int)transform.position.y;
+        //targetX = (int)transform.position.x;
+        //targetY = (int)transform.position.y;
         // Set the row and column
-        column = targetX;
-        row = targetY;
-        previousRow = row;
-        previousColumn = column;
+        //column = targetX;
+        //row = targetY;
+        //previousRow = row;
+        //previousColumn = column;
     }
 
     void Update()
@@ -126,6 +127,9 @@ public class ShapeTile : MonoBehaviour
             // Right Swipe
             // Grab the shapeTile to the right of this tile and plus 1 to its column
             otherShapeTile = board.allShapeTiles[column + 1, row];
+            // Set the previous row and column to this row/ column
+            previousRow = row;
+            previousColumn = column;
             // Get the shapeTile script and subtract 1 off its column
             otherShapeTile.GetComponent<ShapeTile>().column -= 1;
             // Set this Tiles colum to +1
@@ -136,6 +140,9 @@ public class ShapeTile : MonoBehaviour
             // Up Swipe
             // Grab the shapeTile to the right of this tile and plus 1 to its column
             otherShapeTile = board.allShapeTiles[column, row + 1];
+            // Set the previous row and column to this row/ column
+            previousRow = row;
+            previousColumn = column;
             // Get the shapeTile script and subtract 1 off its column
             otherShapeTile.GetComponent<ShapeTile>().row -= 1;
             // Set this Tiles colum to +1
@@ -146,6 +153,9 @@ public class ShapeTile : MonoBehaviour
             // Left Swipe
             // Grab the shapeTile to the right of this tile and plus 1 to its column
             otherShapeTile = board.allShapeTiles[column - 1, row];
+            // Set the previous row and column to this row/ column
+            previousRow = row;
+            previousColumn = column;
             // Get the shapeTile script and subtract 1 off its column
             otherShapeTile.GetComponent<ShapeTile>().column += 1;
             // Set this Tiles colum to +1
@@ -156,6 +166,9 @@ public class ShapeTile : MonoBehaviour
             // Down Swipe
             // Grab the shapeTile to the right of this tile and plus 1 to its column
             otherShapeTile = board.allShapeTiles[column, row -1];
+            // Set the previous row and column to this row/ column
+            previousRow = row;
+            previousColumn = column;
             // Get the shapeTile script and subtract 1 off its column
             otherShapeTile.GetComponent<ShapeTile>().row += 1;
             // Set this Tiles colum to +1
