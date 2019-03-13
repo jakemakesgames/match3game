@@ -2,8 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum GameState
+{
+    wait,
+    move
+}
+
 public class Board : MonoBehaviour
 {
+    // Setting the current state value (for state machine)
+    public GameState currentState = GameState.move;
+
     // The width of the board
     public int width;
     // The height of the board
@@ -229,13 +239,24 @@ public class Board : MonoBehaviour
 
     private IEnumerator FillBoardCo()
     {
+        // Call the Refill Board function
         RefillBoard();
+        // Wait for half a second
         yield return new WaitForSeconds(.5f);
 
+        // While MatchesOnBoard returns true
         while (MatchesOnBoard())
         {
+            // Wait for half a second
             yield return new WaitForSeconds(.5f);
+            // Then call the DestroyMatches function
             DestroyMatches();
         }
+
+        // Wait for half a second
+        yield return new WaitForSeconds(.2f);
+        // Set the current game state to move
+        currentState = GameState.move;
+
     }
 }

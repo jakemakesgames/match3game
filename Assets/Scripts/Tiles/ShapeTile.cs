@@ -96,17 +96,24 @@ public class ShapeTile : MonoBehaviour
 
     private void OnMouseDown()
     {
-        // Set the firstTouchPosition value equal to the mousePosition (ScreenToWorldPoint)
-        firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        
+        // If the boards game state is equal to move
+        if (board.currentState == GameState.move)
+        {
+            // Set the firstTouchPosition value equal to the mousePosition (ScreenToWorldPoint)
+            firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        }
     }
 
     private void OnMouseUp()
     {
-        // Set the finalTouchPosition value equal to the mousePosition (ScreenToWorldPoint)
-        finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        // Call the CalculateAngle function
-        CalculateAngle();
+        // If the board's current game state is equal to move
+        if (board.currentState == GameState.move)
+        {
+            // Set the finalTouchPosition value equal to the mousePosition (ScreenToWorldPoint)
+            finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            // Call the CalculateAngle function
+            CalculateAngle();
+        }
     }
 
     void CalculateAngle()
@@ -117,7 +124,13 @@ public class ShapeTile : MonoBehaviour
             // Debug.Log(swipeAngle);
             // Call the MovePieces function
             MovePieces();
-        }  
+            // Once the angle has been calculated, set the current state to Wait
+            board.currentState = GameState.wait;
+        }
+        else
+        {
+            board.currentState = GameState.move;
+        }
     }
 
     void MovePieces()
@@ -194,6 +207,9 @@ public class ShapeTile : MonoBehaviour
                 // Set this tiles row and tile position to its previous position
                 row = previousRow;
                 column = previousColumn;
+                // Wait for half a second, then set the game state to move
+                yield return new WaitForSeconds(.2f);
+                board.currentState = GameState.move;
             }
             else
             {
