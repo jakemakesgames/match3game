@@ -111,6 +111,7 @@ public class Board : MonoBehaviour
         return false;
     }
 
+    // This function handles destroying matches at the correct column and row on the board
     private void DestroyMatchesAt(int column, int row)
     {
         // Destroy matches at position
@@ -124,6 +125,7 @@ public class Board : MonoBehaviour
         }
     }
 
+    // This method destroys the tiles after they have been matched
     public void DestroyMatches()
     {
         // Cycle through all of the columns
@@ -166,5 +168,64 @@ public class Board : MonoBehaviour
         }
 
         yield return new WaitForSeconds(.4f);
+        StartCoroutine(FillBoardCo());
+    }
+
+    // This helper function takes care of refilling the board after a match has been made
+    private void RefillBoard()
+    {
+        // Cycle through the width of the board
+        for (int i = 0; i < width; i++)
+        {
+            // Cycle through the height of the board
+            for (int j = 0; j < height; j++)
+            {
+                // If all of the tiles in the I and J pos are null
+                if (allShapeTiles[i, j] == null)
+                {
+                    // Instantiate a new tile in it's place
+                    Vector2 tempPosition = new Vector2(i, j);
+                    int tileToUse = Random.Range(0, shapeTiles.Length);
+                    GameObject piece = Instantiate(shapeTiles[tileToUse], tempPosition, Quaternion.identity);
+                    allShapeTiles[i, j] = piece;
+                }
+            }
+        }
+    }
+
+    // Check to see if there are anymore matches on the board happening right after a player match
+    private bool MatchesOnBoard()
+    {
+        // Cycle through the width
+        for (int i = 0; i < width; i++)
+        {
+            // Cycle through the height
+            for (int j = 0; j < height; j++)
+            {
+                // If there are tiles in the i and j positions
+                if (allShapeTiles[i, j] != null)
+                {
+                    // Check to see if they are matched, if they are - return TRUE
+                    if (allShapeTiles[i, j].GetComponent<ShapeTile>().isMatched)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private IEnumerator FillBoardCo()
+    {
+        RefillBoard();
+        yield return new WaitForSeconds(.5f);
+
+        while (MatchesOnBoard())
+        {
+            yield return new WaitForSeconds(.5f);
+            DestroyMatches();
+        }
     }
 }
