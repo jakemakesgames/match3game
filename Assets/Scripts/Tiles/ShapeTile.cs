@@ -19,6 +19,8 @@ public class ShapeTile : MonoBehaviour
     private Board board;
     private GameObject otherShapeTile;
 
+    private FindMatches findMatches;
+
     // Handling Player Touch positions
     private Vector2 firstTouchPosition;
     private Vector2 finalTouchPosition;
@@ -32,6 +34,7 @@ public class ShapeTile : MonoBehaviour
     {
         // Set the board component equal to the GameObject in the scene with the Board script attached
         board = FindObjectOfType<Board>();
+        findMatches = FindObjectOfType<FindMatches>();
         // Set the targetX and targetY values as this GameObjects X and Y positions (cast into a int)
         //targetX = (int)transform.position.x;
         //targetY = (int)transform.position.y;
@@ -44,7 +47,8 @@ public class ShapeTile : MonoBehaviour
 
     void Update()
     {
-        FindMatches();
+        //FindMatches();
+
         if (isMatched)
         {
             // if this tile IS matched, grey out the colour of the sprite
@@ -65,6 +69,8 @@ public class ShapeTile : MonoBehaviour
             {
                 board.allShapeTiles[column, row] = this.gameObject;
             }
+            // Call the FindAllMatches function on the FindMatches GameObject
+            findMatches.FindAllMatches();
         }
         else
         {
@@ -84,6 +90,8 @@ public class ShapeTile : MonoBehaviour
             {
                 board.allShapeTiles[column, row] = this.gameObject;
             }
+            // Call the FindAllMatches function on the FindMatches GameObject
+            findMatches.FindAllMatches();
         }
         else
         {
@@ -187,6 +195,8 @@ public class ShapeTile : MonoBehaviour
             // Set this Tiles colum to +1
             row -= 1;
         }
+        // THIS BELOW LINE IS A QUICK FIX //
+        findMatches.FindAllMatches();
         // Start the CheckMoveCo coroutine
         StartCoroutine(CheckMoveCo());
     }

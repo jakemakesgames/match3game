@@ -29,8 +29,11 @@ public class Board : MonoBehaviour
     // An array of all of the shape tiles
     public GameObject[,] allShapeTiles;
 
+    private FindMatches findMatches;
+
     void Start()
     {
+        findMatches = FindObjectOfType<FindMatches>();
         allBGTiles = new BackgroundTile[width, height];
         allShapeTiles = new GameObject[width, height];
         // Call the SetUp function
@@ -136,6 +139,8 @@ public class Board : MonoBehaviour
         // Check if shape is matched, destroy
         if (allShapeTiles[column, row].GetComponent<ShapeTile>().isMatched)
         {
+            // Before being destroyed -> remove from the find matches list
+            findMatches.currentMatches.Remove(allShapeTiles[column, row]);
             // Destroy the correct tile at the column and row position
             Destroy(allShapeTiles[column, row]);
             // Set that coord to null (leaving it empty)

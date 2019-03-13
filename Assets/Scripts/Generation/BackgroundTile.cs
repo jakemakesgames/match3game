@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class BackgroundTile : MonoBehaviour
 {
-    
 
-    
     void Start()
     {
         // Call the Initialize function
