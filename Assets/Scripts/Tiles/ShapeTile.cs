@@ -196,7 +196,7 @@ public class ShapeTile : MonoBehaviour
             row -= 1;
         }
         // THIS BELOW LINE IS A QUICK FIX //
-        findMatches.FindAllMatches();
+        //findMatches.FindAllMatches();
         // Start the CheckMoveCo coroutine
         StartCoroutine(CheckMoveCo());
     }
@@ -249,9 +249,9 @@ public class ShapeTile : MonoBehaviour
                 if (leftTile1.tag == this.gameObject.tag && rightTile1.tag == this.gameObject.tag)
                 {
                     // This tile, as well as the left and right tiles are now matched
-                    isMatched = true;
                     leftTile1.GetComponent<ShapeTile>().isMatched = true;
                     rightTile1.GetComponent<ShapeTile>().isMatched = true;
+                    isMatched = true;
                 }
             }
         }
@@ -276,9 +276,9 @@ public class ShapeTile : MonoBehaviour
                 if (upTile1.tag == this.gameObject.tag && downTile1.tag == this.gameObject.tag)
                 {
                     // This tile, as well as the left and right tiles are now matched
-                    isMatched = true;
                     upTile1.GetComponent<ShapeTile>().isMatched = true;
                     downTile1.GetComponent<ShapeTile>().isMatched = true;
+                    isMatched = true;
                 }
             }
         }
