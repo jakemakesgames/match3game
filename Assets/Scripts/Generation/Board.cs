@@ -24,6 +24,9 @@ public class Board : MonoBehaviour
     public GameObject backgroundTilePrefab;
     // The shape tiles to be instantiated
     public GameObject[] shapeTiles;
+
+    public GameObject destroyEffect;
+
     // An array of all of the background tiles
     private BackgroundTile[,] allBGTiles;
     // An array of all of the shape tiles
@@ -141,6 +144,11 @@ public class Board : MonoBehaviour
         {
             // Before being destroyed -> remove from the find matches list
             findMatches.currentMatches.Remove(allShapeTiles[column, row]);
+
+            // Instantiate Particle effect
+            GameObject particle =Instantiate(destroyEffect, allShapeTiles[column, row].transform.position, Quaternion.identity);
+            Destroy(particle, 1f);
+
             // Destroy the correct tile at the column and row position
             Destroy(allShapeTiles[column, row]);
             // Set that coord to null (leaving it empty)
