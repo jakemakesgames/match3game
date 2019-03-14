@@ -32,6 +32,8 @@ public class Board : MonoBehaviour
     // An array of all of the shape tiles
     public GameObject[,] allShapeTiles;
 
+    public ShapeTile currentTile;
+
     private FindMatches findMatches;
 
     void Start()
@@ -142,6 +144,12 @@ public class Board : MonoBehaviour
         // Check if shape is matched, destroy
         if (allShapeTiles[column, row].GetComponent<ShapeTile>().isMatched)
         {
+            // How many elements are in the matched pieces list from findmatches?
+            if (findMatches.currentMatches.Count == 4 || findMatches.currentMatches.Count == 7)
+            {
+                findMatches.CheckBombs();
+            }
+
             // Before being destroyed -> remove from the find matches list
             findMatches.currentMatches.Remove(allShapeTiles[column, row]);
 
@@ -265,7 +273,8 @@ public class Board : MonoBehaviour
             // Then call the DestroyMatches function
             DestroyMatches();
         }
-
+        // Clear the current matches list to prevent any mistaken match 7 column/ row bombs
+        findMatches.currentMatches.Clear();
         // Wait for half a second
         yield return new WaitForSeconds(.2f);
         // Set the current game state to move

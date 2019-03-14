@@ -179,4 +179,36 @@ public class FindMatches : MonoBehaviour
         }
         return tiles;
     }
+
+    // Check to make bombs
+    public void CheckBombs()
+    {
+        // Did the player move something
+        if (board.currentTile != null)
+        {
+            // Is the piece they moved matched?
+            if (board.currentTile.isMatched)
+            {
+                // Make it unmatched
+                board.currentTile.isMatched = false;
+                // Decide which bomb we're going to place
+                int typeOfBomb = Random.Range(0, 100);
+                if (typeOfBomb < 50)
+                {
+                    // Make a row bomb
+                    board.currentTile.MakeRowBomb();
+                }
+                else if (typeOfBomb >= 50)
+                {
+                    // Make a column bomb
+                    board.currentTile.MakeColumnBomb();
+                }
+            }
+            // Is the other piece matched?
+            else if (board.currentTile.otherShapeTile != null)
+            {
+
+            }
+        }
+    }
 }

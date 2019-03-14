@@ -15,7 +15,7 @@ public class ShapeTile : MonoBehaviour
     public bool isMatched = false; // Check if it's matched
 
     private Board board; // A reference to the Board Object
-    private GameObject otherShapeTile;
+    public GameObject otherShapeTile;
     private FindMatches findMatches;
     // Handling Player Touch positions
     private Vector2 firstTouchPosition;
@@ -67,13 +67,14 @@ public class ShapeTile : MonoBehaviour
     {
         //FindMatches();
 
+        /*
         if (isMatched)
         {
             // if this tile IS matched, grey out the colour of the sprite
             SpriteRenderer mySprite = GetComponentInChildren<SpriteRenderer>();
             mySprite.color = new Color(1, 1, 1, 0.2f);
         }
-
+        */
         targetX = column;
         targetY = row;
 
@@ -152,6 +153,7 @@ public class ShapeTile : MonoBehaviour
             MovePieces();
             // Once the angle has been calculated, set the current state to Wait
             board.currentState = GameState.wait;
+            board.currentTile = this;
         }
         else
         {
@@ -237,13 +239,14 @@ public class ShapeTile : MonoBehaviour
                 column = previousColumn;
                 // Wait for half a second, then set the game state to move
                 yield return new WaitForSeconds(.2f);
+                board.currentTile = null;
                 board.currentState = GameState.move;
             }
             else
             {
                 board.DestroyMatches();
             }
-            otherShapeTile = null;
+            //otherShapeTile = null;
         }
     }
 
@@ -301,5 +304,21 @@ public class ShapeTile : MonoBehaviour
             }
         }
         #endregion
+    }
+
+    // This method creates a row bomb
+    public void MakeRowBomb()
+    {
+        isRowBomb = true;
+        GameObject arrow = Instantiate(rowArrow, transform.position, Quaternion.identity);
+        arrow.transform.parent = this.transform;
+    }
+
+    // This method creates a column bomb
+    public void MakeColumnBomb()
+    {
+        isColumnBomb = true;
+        GameObject arrow = Instantiate(columnArrow, transform.position, Quaternion.identity);
+        arrow.transform.parent = this.transform;
     }
 }
