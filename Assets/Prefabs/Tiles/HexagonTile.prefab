@@ -71,13 +71,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13f27bb1ecdf34a439ed8ab4ab127f5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileMoveSpeed: 0.4
   column: 0
   row: 0
+  previousColumn: 0
+  previousRow: 0
   targetX: 0
   targetY: 0
   isMatched: 0
   swipeAngle: 0
-  tileMoveSpeed: 0.4
+  swipeResist: 1
+  isColumnBomb: 0
+  columnArrow: {fileID: 3822623875947682432, guid: a705ebff5d1903347aa96c2fd4a2043b,
+    type: 3}
+  isRowBomn: 0
+  rowArrow: {fileID: 6746485425178697014, guid: 85e3a36ea57286640a34e284c3a2dd7a,
+    type: 3}
 --- !u!1 &8235396547231836512
 GameObject:
   m_ObjectHideFlags: 0

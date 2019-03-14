@@ -4,34 +4,40 @@ using UnityEngine;
 
 public class ShapeTile : MonoBehaviour
 {
-    [Header("Board Variables")] 
+    [Header("Board Variables")]
+    public float tileMoveSpeed;
     public int column; // The Colomn Coordinate of this Tile
     public int row; // The Row Coordinate of this Tile
     public int previousColumn; // The previous Column Coordinate
     public int previousRow; // The previous Row Coordinate
-
-    // Ints to *actually* move the pieces around
-    public int targetX;
+    public int targetX; // Ints to *actually* move the pieces around
     public int targetY;
-    // Check if it's matched
-    public bool isMatched = false;
-    // A reference to the Board Object
-    private Board board;
+    public bool isMatched = false; // Check if it's matched
+
+    private Board board; // A reference to the Board Object
     private GameObject otherShapeTile;
-
     private FindMatches findMatches;
-
     // Handling Player Touch positions
     private Vector2 firstTouchPosition;
     private Vector2 finalTouchPosition;
+
+    [Header("Swipe Angles")]
     private Vector2 tempPosition;
     public float swipeAngle = 0.0f;
     public float swipeResist = 1f;
 
-    public float tileMoveSpeed;
+    [Header("Powerups")]
+    public bool isColumnBomb;
+    public GameObject columnArrow;
+
+    public bool isRowBomb;
+    public GameObject rowArrow;
 
     void Start()
     {
+        isColumnBomb = false;
+        isRowBomb = false;
+
         // Set the board component equal to the GameObject in the scene with the Board script attached
         board = FindObjectOfType<Board>();
         findMatches = FindObjectOfType<FindMatches>();
@@ -43,6 +49,18 @@ public class ShapeTile : MonoBehaviour
         //row = targetY;
         //previousRow = row;
         //previousColumn = column;
+    }
+
+    // This is for testing/ debug only
+    // Turn any piece into a row or column bomb at will
+    void OnMouseOver()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            isRowBomb = true;
+            GameObject arrow = Instantiate(rowArrow, transform.position, Quaternion.identity);
+            arrow.transform.parent = this.transform;
+        }
     }
 
     void Update()

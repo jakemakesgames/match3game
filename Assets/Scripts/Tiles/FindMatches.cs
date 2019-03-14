@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class FindMatches : MonoBehaviour
 {
@@ -38,6 +39,11 @@ public class FindMatches : MonoBehaviour
                         {
                             if (leftTile.tag == currentTile.tag && rightTile.tag == currentTile.tag)
                             {
+                                if (currentTile.GetComponent<ShapeTile>().isRowBomb || leftTile.GetComponent<ShapeTile>().isRowBomb || rightTile.GetComponent<ShapeTile>().isRowBomb)
+                                {
+                                    currentMatches.Union(GetRowPieces(j));
+                                }
+
                                 leftTile.GetComponent<ShapeTile>().isMatched = true;
                                 rightTile.GetComponent<ShapeTile>().isMatched = true;
                                 currentTile.GetComponent<ShapeTile>().isMatched = true;
@@ -62,7 +68,39 @@ public class FindMatches : MonoBehaviour
                 }
             }
         }
-
     }
-    
+
+    // Helper method - Column Pieces
+    List<GameObject> GetColumnPieces(int column)
+    {
+        // Initialize list
+        List<GameObject> tiles = new List<GameObject>();
+        // Cycle through tiles in array and see if they're in this list
+        for (int i = 0; i < board.height; i++)
+        {
+            if (board.allShapeTiles[column, i] != null)
+            {
+                tiles.Add(board.allShapeTiles[column, i]);
+                board.allShapeTiles[column, i].GetComponent<ShapeTile>().isMatched = true;
+            }
+        }
+        return tiles;
+    }
+
+    // Helper method - Row Pieces
+    List<GameObject> GetRowPieces(int row)
+    {
+        // Initialize list
+        List<GameObject> tiles = new List<GameObject>();
+        // Cycle through tiles in array and see if they're in this list
+        for (int i = 0; i < board.width; i++)
+        {
+            if (board.allShapeTiles[i, row] != null)
+            {
+                tiles.Add(board.allShapeTiles[i, row]);
+                board.allShapeTiles[i, row].GetComponent<ShapeTile>().isMatched = true;
+            }
+        }
+        return tiles;
+    }
 }
