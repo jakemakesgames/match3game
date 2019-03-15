@@ -94,47 +94,56 @@ public class FindMatches : MonoBehaviour
             for (int j = 0; j < board.height; j++)
             {
                 GameObject currentTile = board.allShapeTiles[i, j];
-                ShapeTile currentTileTile = currentTile.GetComponent<ShapeTile>();
                 if (currentTile != null)
                 {
+                    ShapeTile currentTileTile = currentTile.GetComponent<ShapeTile>();
                     if (i > 0 && i < board.width - 1)
                     {
                         GameObject leftTile = board.allShapeTiles[i - 1, j];
-                        ShapeTile leftTileTile = leftTile.GetComponent<ShapeTile>();
                         GameObject rightTile = board.allShapeTiles[i + 1, j];
-                        ShapeTile rightTileTile = leftTile.GetComponent<ShapeTile>();
 
                         if (leftTile != null && rightTile != null)
                         {
-                            // If the left and right tags are equal to the current tiles tag
-                            if (leftTile.tag == currentTile.tag && rightTile.tag == currentTile.tag)
-                            {
-                                // Check for row bombs
-                                currentMatches.Union(IsRowBomb(leftTileTile, currentTileTile, rightTileTile));
-                                // Check for column bombs
-                                currentMatches.Union(IsColumnBomb(leftTileTile, currentTileTile, rightTileTile));
+                            ShapeTile rightTileTile = leftTile.GetComponent<ShapeTile>();
+                            ShapeTile leftTileTile = leftTile.GetComponent<ShapeTile>();
 
-                                GetNearbyPieces(leftTile, currentTile, rightTile);
+                            if (leftTile != null && rightTile != null)
+                            {
+                                // If the left and right tags are equal to the current tiles tag
+                                if (leftTile.tag == currentTile.tag && rightTile.tag == currentTile.tag)
+                                {
+                                    // Check for row bombs
+                                    currentMatches.Union(IsRowBomb(leftTileTile, currentTileTile, rightTileTile));
+                                    // Check for column bombs
+                                    currentMatches.Union(IsColumnBomb(leftTileTile, currentTileTile, rightTileTile));
+
+                                    GetNearbyPieces(leftTile, currentTile, rightTile);
+                                }
                             }
                         }
                     }
                     if (j > 0 && j < board.height - 1)
                     {
                         GameObject upTile = board.allShapeTiles[i, j + 1];
-                        ShapeTile upTileTile = upTile.GetComponent<ShapeTile>();
                         GameObject downTile = board.allShapeTiles[i, j - 1];
-                        ShapeTile downTileTile = downTile.GetComponent<ShapeTile>();
+
                         if (upTile != null && downTile != null)
                         {
-                            if (upTile.tag == currentTile.tag && downTile.tag == currentTile.tag)
+                            ShapeTile downTileTile = downTile.GetComponent<ShapeTile>();
+                            ShapeTile upTileTile = upTile.GetComponent<ShapeTile>();
+
+                            if (upTile != null && downTile != null)
                             {
-                                // Check for column bombs
-                                currentMatches.Union(IsColumnBomb(upTileTile, currentTileTile, downTileTile));
+                                if (upTile.tag == currentTile.tag && downTile.tag == currentTile.tag)
+                                {
+                                    // Check for column bombs
+                                    currentMatches.Union(IsColumnBomb(upTileTile, currentTileTile, downTileTile));
 
-                                // Check for row bombs
-                                currentMatches.Union(IsRowBomb(upTileTile, currentTileTile, downTileTile));
+                                    // Check for row bombs
+                                    currentMatches.Union(IsRowBomb(upTileTile, currentTileTile, downTileTile));
 
-                                GetNearbyPieces(upTile, currentTile, downTile);
+                                    GetNearbyPieces(upTile, currentTile, downTile);
+                                }
                             }
                         }
                     }
