@@ -146,6 +146,27 @@ public class FindMatches : MonoBehaviour
         }
     }
 
+    // Find all tiles of a colour and turn it to is matched
+    public void MatchPiecesOfColour(string colour)
+    {
+        for (int i = 0; i < board.width; i++)
+        {
+            for (int j = 0; j < board.height; j++)
+            {
+                // Check if that piece exists
+                if (board.allShapeTiles[i, j] != null)
+                {
+                    // Check the tag on that tile
+                    if (board.allShapeTiles[i, j].tag == colour)
+                    {
+                        // Set that dot to be matched
+                        board.allShapeTiles[i, j].GetComponent<ShapeTile>().isMatched = true;
+                    }
+                }
+            }
+        }
+    }
+
     // Helper method - Column Pieces
     List<GameObject> GetColumnPieces(int column)
     {

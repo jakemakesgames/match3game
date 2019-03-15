@@ -6,30 +6,41 @@ public class ShapeTile : MonoBehaviour
 {
     [Header("Board Variables")]
     public float tileMoveSpeed;
+    [Space(5)]
     public int column; // The Colomn Coordinate of this Tile
     public int row; // The Row Coordinate of this Tile
+    [Space(5)]
     public int previousColumn; // The previous Column Coordinate
     public int previousRow; // The previous Row Coordinate
+    [Space(5)]
     public int targetX; // Ints to *actually* move the pieces around
     public int targetY;
+    [Space(5)]
     public bool isMatched = false; // Check if it's matched
-
     private Board board; // A reference to the Board Object
+    [Space(5)]
     public GameObject otherShapeTile;
     private FindMatches findMatches;
     // Handling Player Touch positions
     private Vector2 firstTouchPosition;
     private Vector2 finalTouchPosition;
-
+    [Space(5)]
     [Header("Swipe Angles")]
     private Vector2 tempPosition;
     public float swipeAngle = 0.0f;
     public float swipeResist = 1f;
-
-    [Header("Powerups")]
+    [Space(5)]
+    [Header("Colour Bomb")]
+    [Space(5)]
+    [Header("PowerUps")]
+    public bool isColourBomb;
+    public GameObject colourBomb;
+    [Space(5)]
+    [Header("Column Bomb")]
     public bool isColumnBomb;
     public GameObject columnArrow;
-
+    [Space(5)]
+    [Header("Row Bomb")]
     public bool isRowBomb;
     public GameObject rowArrow;
 
@@ -41,6 +52,8 @@ public class ShapeTile : MonoBehaviour
         // Set the board component equal to the GameObject in the scene with the Board script attached
         board = FindObjectOfType<Board>();
         findMatches = FindObjectOfType<FindMatches>();
+
+        #region OLD CODE
         // Set the targetX and targetY values as this GameObjects X and Y positions (cast into a int)
         //targetX = (int)transform.position.x;
         //targetY = (int)transform.position.y;
@@ -49,6 +62,7 @@ public class ShapeTile : MonoBehaviour
         //row = targetY;
         //previousRow = row;
         //previousColumn = column;
+        #endregion
     }
 
     // This is for testing/ debug only
@@ -57,9 +71,9 @@ public class ShapeTile : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-            isRowBomb = true;
-            GameObject arrow = Instantiate(rowArrow, transform.position, Quaternion.identity);
-            arrow.transform.parent = this.transform;
+            isColourBomb = true;
+            GameObject colour = Instantiate(colourBomb, transform.position, Quaternion.identity);
+            colour.transform.parent = this.transform;
         }
     }
 
@@ -223,6 +237,20 @@ public class ShapeTile : MonoBehaviour
 
     public IEnumerator CheckMoveCo()
     {
+        // if the current tile or other tile is a colour bomb - do the thing
+        if (isColourBomb)
+        {
+            // This piece is a colour bomb and other piece is colour to destroy
+            findMatches.MatchPiecesOfColour(otherShapeTile.tag);
+            isMatched = true;
+        }
+        else if (otherShapeTile.GetComponent<ShapeTile>().isColourBomb)
+        {
+            // The other tile is a colour bomb, and this piece is the colour to destroy
+            findMatches.MatchPiecesOfColour(this.gameObject.tag);
+            isMatched = true;
+        }
+
         // Wait for 5 seconds
         yield return new WaitForSeconds(.2f);
         // Check to see if this Shape or another is matched

@@ -79,12 +79,16 @@ MonoBehaviour:
   targetX: 0
   targetY: 0
   isMatched: 0
+  otherShapeTile: {fileID: 0}
   swipeAngle: 0
   swipeResist: 1
+  isColourBomb: 0
+  colourBomb: {fileID: 4445827908132575494, guid: 0aa023cc1083ade4fb25677e06ad79f1,
+    type: 3}
   isColumnBomb: 0
   columnArrow: {fileID: 3822623875947682432, guid: a705ebff5d1903347aa96c2fd4a2043b,
     type: 3}
-  isRowBomn: 0
+  isRowBomb: 0
   rowArrow: {fileID: 6746485425178697014, guid: 85e3a36ea57286640a34e284c3a2dd7a,
     type: 3}
 --- !u!1 &8235396547231836512
