@@ -167,12 +167,12 @@ public class ShapeTile : MonoBehaviour
     {
         if (Mathf.Abs(finalTouchPosition.y - firstTouchPosition.y) > swipeResist || Mathf.Abs(finalTouchPosition.x - firstTouchPosition.x) > swipeResist)
         {
+            // set the current state to Wait
+            board.currentState = GameState.wait;
             swipeAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x) * 180 / Mathf.PI;
             // Debug.Log(swipeAngle);
             // Call the MovePieces function
             MovePieces();
-            // Once the angle has been calculated, set the current state to Wait
-            board.currentState = GameState.wait;
             board.currentTile = this;
         }
         else
@@ -181,10 +181,32 @@ public class ShapeTile : MonoBehaviour
         }
     }
 
+    // Helper method
+    void MovePiecesActual(Vector2 direction)
+    {
+        // X -> column
+        // Y -> row
+
+        otherShapeTile = board.allShapeTiles[column + (int)direction.x, row + (int)direction.y];
+        previousRow = row;
+        previousColumn = column;
+        otherShapeTile.GetComponent<ShapeTile>().column += -1 * (int)direction.x;
+        otherShapeTile.GetComponent<ShapeTile>().row += -1 * (int)direction.y;
+        column += (int)direction.x;
+        row += (int)direction.y;
+        StartCoroutine(CheckMoveCo());
+
+    }
+
     void MovePieces()
     {
-        if (swipeAngle > -45 && swipeAngle <= 45 && column < board.width -1)
+        if (swipeAngle > -45 && swipeAngle <= 45 && column < board.width - 1)
         {
+            // Right Swipe
+            MovePiecesActual(Vector2.right);
+
+            #region OLD CODE
+            /*
             // Right Swipe
             // Grab the shapeTile to the right of this tile and plus 1 to its column
             otherShapeTile = board.allShapeTiles[column + 1, row];
@@ -195,9 +217,17 @@ public class ShapeTile : MonoBehaviour
             otherShapeTile.GetComponent<ShapeTile>().column -= 1;
             // Set this Tiles colum to +1
             column += 1;
+            StartCoroutine(CheckMoveCo());
+            */
+            #endregion
         }
-        else if (swipeAngle > 45 && swipeAngle <= 135 && row < board.height -1)
+        else if (swipeAngle > 45 && swipeAngle <= 135 && row < board.height - 1)
         {
+            //Up Swipe
+            MovePiecesActual(Vector2.up);
+
+            #region OLD CODE
+            /*
             // Up Swipe
             // Grab the shapeTile to the right of this tile and plus 1 to its column
             otherShapeTile = board.allShapeTiles[column, row + 1];
@@ -208,9 +238,17 @@ public class ShapeTile : MonoBehaviour
             otherShapeTile.GetComponent<ShapeTile>().row -= 1;
             // Set this Tiles colum to +1
             row += 1;
+            StartCoroutine(CheckMoveCo());
+            */
+            #endregion
         }
         else if ((swipeAngle > 135 || swipeAngle <= -135) && column > 0)
         {
+            // Left Swipe
+            MovePiecesActual(Vector2.left);
+
+            #region OLD CODE
+            /*
             // Left Swipe
             // Grab the shapeTile to the right of this tile and plus 1 to its column
             otherShapeTile = board.allShapeTiles[column - 1, row];
@@ -221,12 +259,20 @@ public class ShapeTile : MonoBehaviour
             otherShapeTile.GetComponent<ShapeTile>().column += 1;
             // Set this Tiles colum to +1
             column -= 1;
+            StartCoroutine(CheckMoveCo());
+            */
+            #endregion
         }
-        else  if (swipeAngle < -45 && swipeAngle >= -135 && row > 0)
+        else if (swipeAngle < -45 && swipeAngle >= -135 && row > 0)
         {
             // Down Swipe
+            MovePiecesActual(Vector2.down);
+
+            #region OLD CODE
+            /*
+            // Down Swipe
             // Grab the shapeTile to the right of this tile and plus 1 to its column
-            otherShapeTile = board.allShapeTiles[column, row -1];
+            otherShapeTile = board.allShapeTiles[column, row - 1];
             // Set the previous row and column to this row/ column
             previousRow = row;
             previousColumn = column;
@@ -234,11 +280,17 @@ public class ShapeTile : MonoBehaviour
             otherShapeTile.GetComponent<ShapeTile>().row += 1;
             // Set this Tiles colum to +1
             row -= 1;
+            StartCoroutine(CheckMoveCo());
+            */
+            #endregion
+        }
+        else {
+            board.currentState = GameState.move;
         }
         // THIS BELOW LINE IS A QUICK FIX //
         //findMatches.FindAllMatches();
         // Start the CheckMoveCo coroutine
-        StartCoroutine(CheckMoveCo());
+        //StartCoroutine(CheckMoveCo());
     }
 
     public IEnumerator CheckMoveCo()
