@@ -248,7 +248,7 @@ public class ShapeTile : MonoBehaviour
         {
             // The other tile is a colour bomb, and this piece is the colour to destroy
             findMatches.MatchPiecesOfColour(this.gameObject.tag);
-            isMatched = true;
+            otherShapeTile.GetComponent<ShapeTile>().isMatched = true;
         }
 
         // Wait for 5 seconds

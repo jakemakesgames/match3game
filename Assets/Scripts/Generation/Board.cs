@@ -150,9 +150,6 @@ public class Board : MonoBehaviour
                 findMatches.CheckBombs();
             }
 
-            // Before being destroyed -> remove from the find matches list
-            findMatches.currentMatches.Remove(allShapeTiles[column, row]);
-
             // Instantiate Particle effect
             GameObject particle =Instantiate(destroyEffect, allShapeTiles[column, row].transform.position, Quaternion.identity);
             Destroy(particle, 1f);
@@ -179,6 +176,7 @@ public class Board : MonoBehaviour
                 }
             }
         }
+        findMatches.currentMatches.Clear();
         StartCoroutine(DecreaseRowCo());
     }
 

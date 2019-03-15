@@ -21,6 +21,71 @@ public class FindMatches : MonoBehaviour
         StartCoroutine(FindAllMatchesCo());
     }
 
+    private void AddToListAndMatch(GameObject tile)
+    {
+        if (!currentMatches.Contains(tile))
+        {
+            currentMatches.Add(tile);
+        }
+        tile.GetComponent<ShapeTile>().isMatched = true;
+    }
+
+    private void GetNearbyPieces(GameObject tile1, GameObject tile2, GameObject tile3)
+    {
+        AddToListAndMatch(tile1);
+        AddToListAndMatch(tile2);
+        AddToListAndMatch(tile3);
+    }
+
+    // Helper method to find RowBombs
+    private List<GameObject> IsRowBomb(ShapeTile tile1, ShapeTile tile2, ShapeTile tile3)
+    {
+        List<GameObject> currentTiles = new List<GameObject>();
+        // Check to see if the middle piece is a row bomb
+        if (tile1.isRowBomb)
+        {
+            currentMatches.Union(GetRowPieces(tile1.row));
+        }
+
+        // Check to see if the up piece is a row bomb
+        if (tile2.isRowBomb)
+        {
+            currentMatches.Union(GetRowPieces(tile2.row));
+        }
+
+        // Check to see if the down piece is a row bomb
+        if (tile3.isRowBomb)
+        {
+            currentMatches.Union(GetRowPieces(tile3.row));
+        }
+        return currentTiles;
+    }
+
+    // Helper method to find ColumnBombs
+    private List<GameObject> IsColumnBomb(ShapeTile tile1, ShapeTile tile2, ShapeTile tile3)
+    {
+        List<GameObject> currentTiles = new List<GameObject>();
+        // Check to see if the middle piece is a row bomb
+        if (tile1.isColumnBomb)
+        {
+            currentMatches.Union(GetColumnPieces(tile1.column));
+        }
+
+        // Check to see if the up piece is a row bomb
+        if (tile2.isColumnBomb)
+        {
+            currentMatches.Union(GetColumnPieces(tile2.column));
+        }
+
+        // Check to see if the down piece is a row bomb
+        if (tile3.isColumnBomb)
+        {
+            currentMatches.Union(GetColumnPieces(tile3.column));
+        }
+        return currentTiles;
+    }
+
+
     private IEnumerator FindAllMatchesCo()
     {
         yield return new WaitForSeconds(.1f);
@@ -29,118 +94,50 @@ public class FindMatches : MonoBehaviour
             for (int j = 0; j < board.height; j++)
             {
                 GameObject currentTile = board.allShapeTiles[i, j];
+                ShapeTile currentTileTile = currentTile.GetComponent<ShapeTile>();
                 if (currentTile != null)
                 {
                     if (i > 0 && i < board.width - 1)
                     {
                         GameObject leftTile = board.allShapeTiles[i - 1, j];
+                        ShapeTile leftTileTile = leftTile.GetComponent<ShapeTile>();
                         GameObject rightTile = board.allShapeTiles[i + 1, j];
+                        ShapeTile rightTileTile = leftTile.GetComponent<ShapeTile>();
+
                         if (leftTile != null && rightTile != null)
                         {
                             // If the left and right tags are equal to the current tiles tag
                             if (leftTile.tag == currentTile.tag && rightTile.tag == currentTile.tag)
                             {
-                                // If either the left, right or current tiles are row bombs
-                                if (currentTile.GetComponent<ShapeTile>().isRowBomb || leftTile.GetComponent<ShapeTile>().isRowBomb || rightTile.GetComponent<ShapeTile>().isRowBomb)
-                                {
-                                    // Do the thing
-                                    currentMatches.Union(GetRowPieces(j));
-                                }
+                                // Check for row bombs
+                                currentMatches.Union(IsRowBomb(leftTileTile, currentTileTile, rightTileTile));
+                                // Check for column bombs
+                                currentMatches.Union(IsColumnBomb(leftTileTile, currentTileTile, rightTileTile));
 
-                                // Check to see if the current, left or right tiles are also column bombs
-                                if (currentTile.GetComponent<ShapeTile>().isColumnBomb)
-                                {
-                                    currentMatches.Union(GetColumnPieces(i));
-                                }
-
-                                // Check to see if the left edge tile is a column bomb
-                                if (leftTile.GetComponent<ShapeTile>().isColumnBomb)
-                                {
-                                    currentMatches.Union(GetColumnPieces(i - 1));
-                                }
-
-                                // Check to see if the right edge tile is a column bomb
-                                if (rightTile.GetComponent<ShapeTile>().isColumnBomb)
-                                {
-                                    currentMatches.Union(GetColumnPieces(i + 1));
-                                }
-
-                                // ADD THE TILE TO THE LIST IF IT'S NOT ALREADY IN IT
-                                if (!currentMatches.Contains(leftTile))
-                                {
-                                    currentMatches.Add(leftTile);
-                                }
-                                leftTile.GetComponent<ShapeTile>().isMatched = true;
-                                // ADD THE TILE TO THE LIST IF IT'S NOT ALREADY IN IT
-                                if (!currentMatches.Contains(rightTile))
-                                {
-                                    currentMatches.Add(rightTile);
-                                }
-                                rightTile.GetComponent<ShapeTile>().isMatched = true;
-                                // ADD THE TILE TO THE LIST IF IT'S NOT ALREADY IN IT
-                                if (!currentMatches.Contains(currentTile))
-                                {
-                                    currentMatches.Add(currentTile);
-                                }
-                                currentTile.GetComponent<ShapeTile>().isMatched = true;
+                                GetNearbyPieces(leftTile, currentTile, rightTile);
                             }
                         }
                     }
                     if (j > 0 && j < board.height - 1)
                     {
                         GameObject upTile = board.allShapeTiles[i, j + 1];
+                        ShapeTile upTileTile = upTile.GetComponent<ShapeTile>();
                         GameObject downTile = board.allShapeTiles[i, j - 1];
+                        ShapeTile downTileTile = downTile.GetComponent<ShapeTile>();
                         if (upTile != null && downTile != null)
                         {
                             if (upTile.tag == currentTile.tag && downTile.tag == currentTile.tag)
                             {
-                                // If either the left, right or current tiles are column bombs
-                                if (currentTile.GetComponent<ShapeTile>().isColumnBomb || upTile.GetComponent<ShapeTile>().isColumnBomb || downTile.GetComponent<ShapeTile>().isColumnBomb)
-                                {
-                                    // Do the thing
-                                    currentMatches.Union(GetColumnPieces(i));
-                                }
+                                // Check for column bombs
+                                currentMatches.Union(IsColumnBomb(upTileTile, currentTileTile, downTileTile));
 
-                                // Check to see if the middle piece is a row bomb
-                                if (currentTile.GetComponent<ShapeTile>().isRowBomb)
-                                {
-                                    currentMatches.Union(GetRowPieces(j));
-                                }
+                                // Check for row bombs
+                                currentMatches.Union(IsRowBomb(upTileTile, currentTileTile, downTileTile));
 
-                                // Check to see if the up piece is a row bomb
-                                if (upTile.GetComponent<ShapeTile>().isRowBomb)
-                                {
-                                    currentMatches.Union(GetRowPieces(j + 1));
-                                }
-
-                                // Check to see if the down piece is a row bomb
-                                if (downTile.GetComponent<ShapeTile>().isRowBomb)
-                                {
-                                    currentMatches.Union(GetRowPieces(j - 1));
-                                }
-
-                                // ADD THE TILE TO THE LIST IF IT'S NOT ALREADY IN IT
-                                if (!currentMatches.Contains(upTile))
-                                {
-                                    currentMatches.Add(upTile);
-                                }
-                                upTile.GetComponent<ShapeTile>().isMatched = true;
-                                // ADD THE TILE TO THE LIST IF IT'S NOT ALREADY IN IT
-                                if (!currentMatches.Contains(downTile))
-                                {
-                                    currentMatches.Add(downTile);
-                                }
-                                downTile.GetComponent<ShapeTile>().isMatched = true;
-                                // ADD THE TILE TO THE LIST IF IT'S NOT ALREADY IN IT
-                                if (!currentMatches.Contains(currentTile))
-                                {
-                                    currentMatches.Add(currentTile);
-                                }
-                                currentTile.GetComponent<ShapeTile>().isMatched = true;
+                                GetNearbyPieces(upTile, currentTile, downTile);
                             }
                         }
                     }
-
                 }
             }
         }
