@@ -191,7 +191,25 @@ public class FindMatches : MonoBehaviour
             {
                 // Make it unmatched
                 board.currentTile.isMatched = false;
+
+                // Right Swipe
+                if ((board.currentTile.swipeAngle > -45 && board.currentTile.swipeAngle <= 45)
+                    // Left Swipe
+                    || board.currentTile.swipeAngle < -135 || board.currentTile.swipeAngle >= 135)
+                {
+                    // MAKE ROW BOMB
+                    board.currentTile.MakeRowBomb();
+                }
+                // else its an up or down swipe
+                else
+                {
+                    // MAKE COLUMN BOMB
+                    board.currentTile.MakeColumnBomb();
+                }
+
+                #region OLD BOMB CODE
                 // Decide which bomb we're going to place
+                /*
                 int typeOfBomb = Random.Range(0, 100);
                 if (typeOfBomb < 50)
                 {
@@ -203,11 +221,33 @@ public class FindMatches : MonoBehaviour
                     // Make a column bomb
                     board.currentTile.MakeColumnBomb();
                 }
+                */
+                #endregion
+
             }
             // Is the other piece matched?
             else if (board.currentTile.otherShapeTile != null)
             {
+                ShapeTile otherTile = board.currentTile.otherShapeTile.GetComponent<ShapeTile>();
+                if (otherTile.isMatched)
+                {
+                    otherTile.isMatched = false;
 
+                    // Right Swipe
+                    if ((board.currentTile.swipeAngle > -45 && board.currentTile.swipeAngle <= 45)
+                        // Left Swipe
+                        || board.currentTile.swipeAngle < -135 || board.currentTile.swipeAngle >= 135)
+                    {
+                        // MAKE ROW BOMB
+                        otherTile.MakeRowBomb();
+                    }
+                    // else its an up or down swipe
+                    else
+                    {
+                        // MAKE COLUMN BOMB
+                        otherTile.MakeColumnBomb();
+                    }
+                }
             }
         }
     }
