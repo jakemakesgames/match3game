@@ -137,6 +137,105 @@ public class Board : MonoBehaviour
         return false;
     }
 
+    // Check to see how many pieces in list are in one row or column
+    private bool ColumnOrRow()
+    {
+        int numberHorizontal = 0;
+        int numberVertical = 0;
+
+        ShapeTile firstPiece = findMatches.currentMatches[0].GetComponent<ShapeTile>();
+
+        if (firstPiece != null)
+        {
+            foreach (GameObject currentPiece in findMatches.currentMatches)
+            {
+                ShapeTile tile = currentPiece.GetComponent<ShapeTile>();
+                if (tile.row == firstPiece.row)
+                {
+                    numberHorizontal++;
+                }
+                if (tile.column == firstPiece.column)
+                {
+                    numberVertical++;
+                }
+            }
+        }
+        return (numberVertical == 5 || numberHorizontal == 5);
+    }
+
+    private void CheckToMakeBombs()
+    {
+        if (findMatches.currentMatches.Count == 4 || findMatches.currentMatches.Count == 7)
+        {
+            findMatches.CheckBombs();
+        }
+        if (findMatches.currentMatches.Count == 5 || findMatches.currentMatches.Count == 8)
+        {
+            if (ColumnOrRow())
+            {
+                // Make a colour bomb
+                // Is the current tile matched?
+                // Unmatch it and turn it into a colour bomb
+                if (currentTile != null)
+                {
+                    if (currentTile.isMatched)
+                    {
+                        if (!currentTile.isColourBomb)
+                        {
+                            currentTile.isMatched = false;
+                            currentTile.MakeColourBomb();
+                        }
+                    }
+                    else {
+                        if (currentTile.otherShapeTile != null)
+                        {
+                            ShapeTile otherTile = currentTile.otherShapeTile.GetComponent<ShapeTile>();
+                            if (otherTile.isMatched)
+                            {
+                                if (!otherTile.isColourBomb)
+                                {
+                                    otherTile.isMatched = false;
+                                    otherTile.MakeColourBomb();
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                // Make an adjacent bomb
+                // Is the current tile matched?
+                // Unmatch it and turn it into a colour bomb
+                if (currentTile != null)
+                {
+                    if (currentTile.isMatched)
+                    {
+                        if (!currentTile.isAdjacentBomb)
+                        {
+                            currentTile.isMatched = false;
+                            currentTile.MakeAdjacentBomb();
+                        }
+                    }
+                    else
+                    {
+                        if (currentTile.otherShapeTile != null)
+                        {
+                            ShapeTile otherTile = currentTile.otherShapeTile.GetComponent<ShapeTile>();
+                            if (otherTile.isMatched)
+                            {
+                                if (!otherTile.isAdjacentBomb)
+                                {
+                                    otherTile.isMatched = false;
+                                    otherTile.MakeAdjacentBomb();
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
     // This function handles destroying matches at the correct column and row on the board
     private void DestroyMatchesAt(int column, int row)
     {
@@ -145,9 +244,10 @@ public class Board : MonoBehaviour
         if (allShapeTiles[column, row].GetComponent<ShapeTile>().isMatched)
         {
             // How many elements are in the matched pieces list from findmatches?
-            if (findMatches.currentMatches.Count == 4 || findMatches.currentMatches.Count == 7)
+            if (findMatches.currentMatches.Count >= 4)
             {
-                findMatches.CheckBombs();
+                // call the CheckToMakeBombs method
+                CheckToMakeBombs();
             }
 
             // Instantiate Particle effect

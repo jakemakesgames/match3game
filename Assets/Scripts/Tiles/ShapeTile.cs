@@ -355,4 +355,20 @@ public class ShapeTile : MonoBehaviour
         GameObject arrow = Instantiate(columnArrow, transform.position, Quaternion.identity);
         arrow.transform.parent = this.transform;
     }
+
+    // This method creates a colour bomb
+    public void MakeColourBomb()
+    {
+        isColourBomb = true;
+        GameObject colour = Instantiate(colourBomb, transform.position, Quaternion.identity);
+        colour.transform.parent = this.transform;
+    }
+
+    // Make an Adjacent bomb
+    public void MakeAdjacentBomb()
+    {
+        isAdjacentBomb = true;
+        GameObject adjacent = Instantiate(adjacentBomb, transform.position, Quaternion.identity);
+        adjacent.transform.parent = this.transform;
+    }
 }
