@@ -37,6 +37,31 @@ public class FindMatches : MonoBehaviour
         AddToListAndMatch(tile3);
     }
 
+    // Helper method to find Adjacent bombs
+    private List<GameObject> IsAdjacentBomb(ShapeTile tile1, ShapeTile tile2, ShapeTile tile3)
+    {
+        List<GameObject> currentTiles = new List<GameObject>();
+        // Check to see if the middle piece is an adjacent bomb
+        if (tile1.isAdjacentBomb)
+        {
+            currentMatches.Union(GetAdjacentPieces(tile1.column, tile1.row));
+        }
+
+        // Check to see if the up piece is an adjacent bomb
+        if (tile2.isAdjacentBomb)
+        {
+            currentMatches.Union(GetAdjacentPieces(tile2.column, tile2.row));
+        }
+
+        // Check to see if the down piece is an adjacent bomb
+        if (tile3.isAdjacentBomb)
+        {
+            currentMatches.Union(GetAdjacentPieces(tile3.column, tile3.row));
+        }
+        return currentTiles;
+    }
+
+
     // Helper method to find RowBombs
     private List<GameObject> IsRowBomb(ShapeTile tile1, ShapeTile tile2, ShapeTile tile3)
     {
@@ -116,6 +141,8 @@ public class FindMatches : MonoBehaviour
                                     currentMatches.Union(IsRowBomb(leftTileTile, currentTileTile, rightTileTile));
                                     // Check for column bombs
                                     currentMatches.Union(IsColumnBomb(leftTileTile, currentTileTile, rightTileTile));
+                                    // Check for Adjacent bombs
+                                    currentMatches.Union(IsAdjacentBomb(leftTileTile, currentTileTile, rightTileTile));
 
                                     GetNearbyPieces(leftTile, currentTile, rightTile);
                                 }
@@ -138,9 +165,10 @@ public class FindMatches : MonoBehaviour
                                 {
                                     // Check for column bombs
                                     currentMatches.Union(IsColumnBomb(upTileTile, currentTileTile, downTileTile));
-
                                     // Check for row bombs
                                     currentMatches.Union(IsRowBomb(upTileTile, currentTileTile, downTileTile));
+                                    // Check for Adjacent bombs
+                                    currentMatches.Union(IsAdjacentBomb(upTileTile, currentTileTile, downTileTile));
 
                                     GetNearbyPieces(upTile, currentTile, downTile);
                                 }
@@ -171,6 +199,26 @@ public class FindMatches : MonoBehaviour
                 }
             }
         }
+    }
+
+    // A helper method for the adjacent pieces
+    List<GameObject> GetAdjacentPieces(int column, int row)
+    {
+        List<GameObject> tiles = new List<GameObject>();
+        // Loop thtough the rows and columns 1 directly in each dir
+        for (int i = column -1; i <= column + 1; i++)
+        {
+            for (int j  = row - 1; j  <= row + 1; j ++)
+            {
+                // Check to see if the piece is inside the board
+                if(i >= 0 && i < board.width && j >= 0 && j < board.height)
+                {
+                    tiles.Add(board.allShapeTiles[i, j]);
+                    board.allShapeTiles[i, j].GetComponent<ShapeTile>().isMatched = true;
+                }
+            }
+        }
+        return tiles;
     }
 
     // Helper method - Column Pieces

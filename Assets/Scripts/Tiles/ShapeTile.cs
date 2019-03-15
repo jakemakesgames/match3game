@@ -43,11 +43,17 @@ public class ShapeTile : MonoBehaviour
     [Header("Row Bomb")]
     public bool isRowBomb;
     public GameObject rowArrow;
+    [Space(5)]
+    [Header("AdjacentBomb")]
+    public bool isAdjacentBomb;
+    public GameObject adjacentBomb;
 
     void Start()
     {
         isColumnBomb = false;
         isRowBomb = false;
+        isColourBomb = false;
+        isAdjacentBomb = false;
 
         // Set the board component equal to the GameObject in the scene with the Board script attached
         board = FindObjectOfType<Board>();
@@ -71,9 +77,9 @@ public class ShapeTile : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-            isColourBomb = true;
-            GameObject colour = Instantiate(colourBomb, transform.position, Quaternion.identity);
-            colour.transform.parent = this.transform;
+            isAdjacentBomb = true;
+            GameObject adjacent = Instantiate(adjacentBomb, transform.position, Quaternion.identity);
+            adjacent.transform.parent = this.transform;
         }
     }
 

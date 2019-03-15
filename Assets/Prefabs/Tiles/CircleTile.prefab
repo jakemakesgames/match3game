@@ -91,6 +91,9 @@ MonoBehaviour:
   isRowBomb: 0
   rowArrow: {fileID: 6746485425178697014, guid: 85e3a36ea57286640a34e284c3a2dd7a,
     type: 3}
+  isAdjacentBomb: 0
+  adjacentBomb: {fileID: 1972605652573318674, guid: a1e8dd5518642fb4c83b649ff9627e32,
+    type: 3}
 --- !u!1 &6021864373653893392
 GameObject:
   m_ObjectHideFlags: 0
