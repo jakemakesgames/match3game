@@ -2,11 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public enum GameState
 {
     wait,
     move
+}
+
+
+public enum TileKind
+{
+    Breakable,
+    Blank,
+    Normal
+}
+
+[System.Serializable]
+public class TileType
+{
+    public int x; // X value in grid
+    public int y; // Y value in grid
+    public TileKind tileKind;
 }
 
 public class Board : MonoBehaviour
@@ -25,10 +40,12 @@ public class Board : MonoBehaviour
     // The shape tiles to be instantiated
     public GameObject[] shapeTiles;
 
+    public TileType[] boardLayout;
+
     public GameObject destroyEffect;
 
     // An array of all of the background tiles
-    private BackgroundTile[,] allBGTiles;
+    private bool [,] blankSpaces;
     // An array of all of the shape tiles
     public GameObject[,] allShapeTiles;
 
@@ -39,61 +56,75 @@ public class Board : MonoBehaviour
     void Start()
     {
         findMatches = FindObjectOfType<FindMatches>();
-        allBGTiles = new BackgroundTile[width, height];
+        blankSpaces = new bool [width, height];
         allShapeTiles = new GameObject[width, height];
         // Call the SetUp function
         SetUp();
     }
 
+    public void GenerateBlankSpaces()
+    {
+        for (int i = 0; i < boardLayout.Length; i++)
+        {
+            if (boardLayout[i].tileKind == TileKind.Blank)
+            {
+                blankSpaces[boardLayout[i].x, boardLayout[i].y] = true;
+            }
+        }
+    }
+
     private void SetUp()
     {
+        GenerateBlankSpaces();
         // Cycle through the Width and Height and Instantiate a Tile Prefab at
         // every position
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
             {
-                // Create a new temporary variable - a Vector2 for the W & H pos
-                Vector2 tempPosition = new Vector2(i, j + offSet);
-                // Instantiate the backgroundTilePrefab as a GameObject
-                GameObject backgroundTile = Instantiate(backgroundTilePrefab, tempPosition, Quaternion.identity) as GameObject;
-                // Set the Parent object of the backgroundTile to the Board GameObject
-                backgroundTile.transform.parent = this.transform;
-                // Set the name of each background tile equal to their width and height position on the grid
-                backgroundTile.name = " background tile ( " + i + " , " + j + " )";
-                // choose a random number between 0 and the amount of shapeTiles in the array
-                int tileToUse = Random.Range(0, shapeTiles.Length);
-
-                // make sure the while loop doesnt become infinite
-                int maxIterations = 0;
-
-                // Check to see if there are matches, if there are, choose a different shape tile
-                while (MatchesAt(i, j, shapeTiles[tileToUse]) && maxIterations < 100)
+                if (!blankSpaces[i, j])
                 {
-                    // Choose a new tile to instantiate
-                    tileToUse = Random.Range(0, shapeTiles.Length);
-                    // Increase the maxIterations by 1
-                    maxIterations++;
-                    Debug.Log(maxIterations);
+                    // Create a new temporary variable - a Vector2 for the W & H pos
+                    Vector2 tempPosition = new Vector2(i, j + offSet);
+                    // Instantiate the backgroundTilePrefab as a GameObject
+                    GameObject backgroundTile = Instantiate(backgroundTilePrefab, tempPosition, Quaternion.identity) as GameObject;
+                    // Set the Parent object of the backgroundTile to the Board GameObject
+                    backgroundTile.transform.parent = this.transform;
+                    // Set the name of each background tile equal to their width and height position on the grid
+                    backgroundTile.name = " background tile ( " + i + " , " + j + " )";
+                    // choose a random number between 0 and the amount of shapeTiles in the array
+                    int tileToUse = Random.Range(0, shapeTiles.Length);
+
+                    // make sure the while loop doesnt become infinite
+                    int maxIterations = 0;
+
+                    // Check to see if there are matches, if there are, choose a different shape tile
+                    while (MatchesAt(i, j, shapeTiles[tileToUse]) && maxIterations < 100)
+                    {
+                        // Choose a new tile to instantiate
+                        tileToUse = Random.Range(0, shapeTiles.Length);
+                        // Increase the maxIterations by 1
+                        maxIterations++;
+                        Debug.Log(maxIterations);
+                    }
+                    // Reset maxIterations
+                    maxIterations = 0;
+
+                    // Instantiate a random tile from the array (based off the tileToUse result) at this shapeTiles position with no rotation
+                    GameObject shapeTile = Instantiate(shapeTiles[tileToUse], tempPosition, Quaternion.identity) as GameObject;
+
+                    // get the ShapeTile script on the tile and set the row to j
+                    shapeTile.GetComponent<ShapeTile>().row = j;
+                    // get the ShapeTile script on the tile and set the column to i
+                    shapeTile.GetComponent<ShapeTile>().column = i;
+
+                    // Set the Parent object of the tile to the BackgroundTile GameObject
+                    shapeTile.transform.parent = this.transform;
+                    // Set the name of each background tile equal to their width and height position on the grid
+                    shapeTile.name = "shape tile ( " + i + " , " + j + " )";
+
+                    allShapeTiles[i, j] = shapeTile;
                 }
-                // Reset maxIterations
-                maxIterations = 0;
-
-                // Instantiate a random tile from the array (based off the tileToUse result) at this shapeTiles position with no rotation
-                GameObject shapeTile = Instantiate(shapeTiles[tileToUse], tempPosition, Quaternion.identity) as GameObject;
-
-                // get the ShapeTile script on the tile and set the row to j
-                shapeTile.GetComponent<ShapeTile>().row = j;
-                // get the ShapeTile script on the tile and set the column to i
-                shapeTile.GetComponent<ShapeTile>().column = i;
-
-                // Set the Parent object of the tile to the BackgroundTile GameObject
-                shapeTile.transform.parent = this.transform;
-                // Set the name of each background tile equal to their width and height position on the grid
-                shapeTile.name = "shape tile ( " + i + " , " + j + " )";
-                
-                allShapeTiles[i, j] = shapeTile;
-
             }
         }
     }
@@ -103,33 +134,46 @@ public class Board : MonoBehaviour
         // if column AND row is greater than 1
         if (column > 1 && row > 1)
         {
-            // if the shape tile 1 and 2 has the same tag as this tile - return true (we've got a match)
-            if (allShapeTiles[column - 1, row].tag == piece.tag && allShapeTiles[column - 2, row].tag == piece.tag)
+            if (allShapeTiles[column -1, row] != null && allShapeTiles[column -2, row] != null)
             {
-                return true;
+                // if the shape tile 1 and 2 has the same tag as this tile - return true (we've got a match)
+                if (allShapeTiles[column - 1, row].tag == piece.tag && allShapeTiles[column - 2, row].tag == piece.tag)
+                {
+                    return true;
+                }
             }
-            // if the shape tile 1 and 2 has the same tag as this tile - return true (we've got a match)
-            if (allShapeTiles[column, row - 1].tag == piece.tag && allShapeTiles[column, row - 2].tag == piece.tag)
+
+            if (allShapeTiles[column, row - 1] != null && allShapeTiles[column, row - 2] != null)
             {
-                return true;
+                // if the shape tile 1 and 2 has the same tag as this tile - return true (we've got a match)
+                if (allShapeTiles[column, row - 1].tag == piece.tag && allShapeTiles[column, row - 2].tag == piece.tag)
+                {
+                    return true;
+                }
             }
         }
         else if (column <= 1 || row <= 1)
         {
             if (row > 1)
             {
-                // Check tiles below
-                if (allShapeTiles[column, row - 1].tag == piece.tag && allShapeTiles[column, row - 2].tag == piece.tag)
+                if (allShapeTiles[column, row - 1] != null && allShapeTiles[column, row - 2] != null)
                 {
-                    return true;
+                    // Check tiles below
+                    if (allShapeTiles[column, row - 1].tag == piece.tag && allShapeTiles[column, row - 2].tag == piece.tag)
+                    {
+                        return true;
+                    }
                 }
             }
             if (column > 1)
             {
-                // Check tiles below
-                if (allShapeTiles[column -1, row].tag == piece.tag && allShapeTiles[column -2, row].tag == piece.tag)
+                if (allShapeTiles[column - 1, row] != null && allShapeTiles[column - 2, row] != null)
                 {
-                    return true;
+                    // Check tiles below
+                    if (allShapeTiles[column - 1, row].tag == piece.tag && allShapeTiles[column - 2, row].tag == piece.tag)
+                    {
+                        return true;
+                    }
                 }
             }
         }
