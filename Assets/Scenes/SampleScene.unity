@@ -245,6 +245,8 @@ MonoBehaviour:
   offSet: 20
   backgroundTilePrefab: {fileID: 859015979769944645, guid: 1d3470736960ff341a4f3b79ad4ebd4b,
     type: 3}
+  breakableTilePrefab: {fileID: 3772718299017064638, guid: e3912b4aa7469394b87d0858b1055604,
+    type: 3}
   shapeTiles:
   - {fileID: 3243907077133750565, guid: 9cc3cce4a0af266448cbcdc276cf3c2b, type: 3}
   - {fileID: 3239966394059518891, guid: 586a28d50c9cdb149803772e1db07b07, type: 3}
@@ -271,6 +273,15 @@ MonoBehaviour:
   - x: 5
     y: 4
     tileKind: 1
+  - x: 1
+    y: 5
+    tileKind: 0
+  - x: 1
+    y: 6
+    tileKind: 0
+  - x: 1
+    y: 7
+    tileKind: 0
   destroyEffect: {fileID: 1700846870748151439, guid: 384ef02bbcf352949aa371db91cb8345,
     type: 3}
   currentTile: {fileID: 0}
