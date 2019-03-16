@@ -479,6 +479,7 @@ public class Board : MonoBehaviour
         // Finding deadlock
         if (IsDeadlocked())
         {
+            ShuffleBoard();
             Debug.Log("DEADLOCKED!");
         }
 
@@ -502,7 +503,7 @@ public class Board : MonoBehaviour
     {
         for (int i = 0; i < width; i++)
         {
-            for (int j = 0; j < width; j++)
+            for (int j = 0; j < height; j++)
             {
                 // Make sure its not an empty space
                 if (allShapeTiles[i, j] != null)
@@ -580,8 +581,68 @@ public class Board : MonoBehaviour
                 }
             }
         }
-
         // If DEADLOCKED -> return true
         return true;
+    }
+
+    // This method will shuffle the board if it becomes deadlocked (recursive method)
+    private void ShuffleBoard()
+    {
+        // Create a list of gameobjects
+        List<GameObject> newBoard = new List<GameObject>();
+        // Add every piece to list
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                if (allShapeTiles[i, j] != null)
+                {
+                    newBoard.Add(allShapeTiles[i, j]);
+                }
+            }
+        }
+        // for every spot on the board
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                // If this spot shouldnt be blank
+                if (!blankSpaces[i, j])
+                {
+                    // Pick a rand number
+                    int pieceToUse = Random.Range(0, newBoard.Count);
+                    
+                    // make sure the while loop doesnt become infinite
+                    int maxIterations = 0;
+
+                    // Check to see if there are matches, if there are, choose a different shape tile
+                    while (MatchesAt(i, j, newBoard[pieceToUse]) && maxIterations < 100)
+                    {
+                        // Choose a new tile to instantiate
+                        pieceToUse = Random.Range(0, newBoard.Count);
+                        // Increase the maxIterations by 1
+                        maxIterations++;
+                        Debug.Log(maxIterations);
+                    }
+                    // Piece container
+                    ShapeTile piece = newBoard[pieceToUse].GetComponent<ShapeTile>();
+                    // Reset maxIterations
+                    maxIterations = 0;
+                    // Set the piece column to i
+                    piece.column = i;
+                    // Set the piece row to j
+                    piece.row = j;
+                    // Fill in the tiles array with new piece
+                    allShapeTiles[i, j] = newBoard[pieceToUse];
+                    // Remove from list
+                    newBoard.Remove(newBoard[pieceToUse]);
+                }
+            }
+        }
+        // check if the board is still deadlocked
+        if (IsDeadlocked())
+        {
+            ShuffleBoard();
+        }
     }
 }
