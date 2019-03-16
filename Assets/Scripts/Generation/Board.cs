@@ -321,7 +321,38 @@ public class Board : MonoBehaviour
             }
         }
         findMatches.currentMatches.Clear();
-        StartCoroutine(DecreaseRowCo());
+        //StartCoroutine(DecreaseRowCo());
+        StartCoroutine(DecreaseRowCo2());
+    }
+
+    private IEnumerator DecreaseRowCo2()
+    {
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                // If the current spot isn't blank and is empty
+                if (!blankSpaces[i, j] && allShapeTiles[i, j] == null)
+                {
+                    // loop from space above to top of column
+                    for (int k = j + 1; k < height; k++)
+                    {
+                        // if a tile is found
+                        if (allShapeTiles[i, k] != null)
+                        {
+                            // move tile to this empty space
+                            allShapeTiles[i, k].GetComponent<ShapeTile>().row = j;
+                            // set that spot to be null
+                            allShapeTiles[i, k] = null;
+                            // break out of the loop
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        yield return new WaitForSeconds(.4f);
+        StartCoroutine(FillBoardCo());
     }
 
     // Create a coroutine to collapse row
@@ -362,7 +393,7 @@ public class Board : MonoBehaviour
             for (int j = 0; j < height; j++)
             {
                 // If all of the tiles in the I and J pos are null
-                if (allShapeTiles[i, j] == null)
+                if (allShapeTiles[i, j] == null && !blankSpaces[i, j])
                 {
                     // Instantiate a new tile in it's place
                     Vector2 tempPosition = new Vector2(i, j + offSet);

@@ -190,11 +190,19 @@ public class ShapeTile : MonoBehaviour
         otherShapeTile = board.allShapeTiles[column + (int)direction.x, row + (int)direction.y];
         previousRow = row;
         previousColumn = column;
-        otherShapeTile.GetComponent<ShapeTile>().column += -1 * (int)direction.x;
-        otherShapeTile.GetComponent<ShapeTile>().row += -1 * (int)direction.y;
-        column += (int)direction.x;
-        row += (int)direction.y;
-        StartCoroutine(CheckMoveCo());
+
+        if (otherShapeTile != null)
+        {
+            otherShapeTile.GetComponent<ShapeTile>().column += -1 * (int)direction.x;
+            otherShapeTile.GetComponent<ShapeTile>().row += -1 * (int)direction.y;
+            column += (int)direction.x;
+            row += (int)direction.y;
+            StartCoroutine(CheckMoveCo());
+        }
+        else
+        {
+            board.currentState = GameState.move;
+        }
 
     }
 
