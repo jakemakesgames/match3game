@@ -475,8 +475,113 @@ public class Board : MonoBehaviour
         findMatches.currentMatches.Clear();
         // Wait for half a second
         yield return new WaitForSeconds(.2f);
+
+        // Finding deadlock
+        if (IsDeadlocked())
+        {
+            Debug.Log("DEADLOCKED!");
+        }
+
         // Set the current game state to move
         currentState = GameState.move;
+    }
 
+    // Helper method to switch pieces
+    private void SwitchPieces(int column, int row, Vector2 direction)
+    {
+        // Take the second piece and save it in a holder
+        GameObject holder = allShapeTiles[column + (int)direction.x, row + (int)direction.y] as GameObject;
+        // Switching the first tile to be the second pos
+        allShapeTiles[column + (int)direction.x, row + (int)direction.y] = allShapeTiles[column, row];
+        // Set the first tile to be the second tile
+        allShapeTiles[column, row] = holder;
+    }
+
+    // Helper method capable of checking for matches -> return true or false
+    private bool CheckForMatches()
+    {
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                // Make sure its not an empty space
+                if (allShapeTiles[i, j] != null)
+                {
+                    // Make sure going to the right are in the board
+                    if (i < width - 2)
+                    {
+                        // Check if the tiles to the right and two to the right exist
+                        if (allShapeTiles[i + 1, j] != null && allShapeTiles[i + 2, j] != null)
+                        {
+                            // Check if the tags are the same -> if there are, there is a match.
+                            if (allShapeTiles[i + 1, j].tag == allShapeTiles[i, j].tag
+                               && allShapeTiles[i + 2, j].tag == allShapeTiles[i, j].tag)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+
+                    if (j < height - 2)
+                    {
+                        // Check if the tiles above exist
+                        if (allShapeTiles[i, j + 1] != null && allShapeTiles[i, j + 2] != null)
+                        {
+                            // Check if the tags are the same -> if there are, there is a match.
+                            if (allShapeTiles[i, j + 1].tag == allShapeTiles[i, j].tag
+                               && allShapeTiles[i, j + 2].tag == allShapeTiles[i, j].tag)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private bool SwitchAndCheck(int column, int row, Vector2 direction)
+    {
+        SwitchPieces(column, row, direction);
+        if (CheckForMatches())
+        {
+            SwitchPieces(column, row, direction);
+            return true;
+        }
+        SwitchPieces(column, row, direction);
+        return false;
+    }
+
+    private bool IsDeadlocked()
+    {
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                if (allShapeTiles[i, j] != null)
+                {
+                    if (i < width - 1)
+                    {
+                        if (SwitchAndCheck(i, j, Vector2.right))
+                        {
+                            // There is a match
+                            return false;
+                        }
+                    }
+                    if (j < height - 1)
+                    {
+                        if (SwitchAndCheck(i, j, Vector2.up))
+                        {
+                            // There is a match
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
+        // If DEADLOCKED -> return true
+        return true;
     }
 }
