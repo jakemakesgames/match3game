@@ -122,6 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
+  - component: {fileID: 519420030}
   - component: {fileID: 519420029}
   m_Layer: 0
   m_Name: Main Camera
@@ -138,6 +139,21 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
+--- !u!114 &519420030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65265ccacd47ced4c8d5ab1176c299c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraOffset: -10
+  aspectRatio: 0.625
+  padding: 2
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -234,8 +250,6 @@ MonoBehaviour:
   - {fileID: 3239966394059518891, guid: 586a28d50c9cdb149803772e1db07b07, type: 3}
   - {fileID: 6111634972526330764, guid: 61e3522fdd0dc7b4eba96a6756795b0d, type: 3}
   - {fileID: 48000571917110242, guid: 2d47b469b228e1d41b2210fd804771b7, type: 3}
-  - {fileID: 3262339209531394532, guid: 306d039e837a77b419dbe57234df17e3, type: 3}
-  - {fileID: 6036299159938204525, guid: ed710e3f1f9f9b442a78c5d7189f0115, type: 3}
   destroyEffect: {fileID: 1700846870748151439, guid: 384ef02bbcf352949aa371db91cb8345,
     type: 3}
   currentTile: {fileID: 0}
