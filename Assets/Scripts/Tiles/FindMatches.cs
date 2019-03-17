@@ -234,8 +234,16 @@ public class FindMatches : MonoBehaviour
         {
             if (board.allShapeTiles[column, i] != null)
             {
+                ShapeTile tile = board.allShapeTiles[column, i].GetComponent<ShapeTile>();
+
+                // Check to see if one of the tiles happens to be a row bomb, if so -> union those pieces to the tiles list
+                if (tile.isRowBomb)
+                {
+                    tiles.Union(GetRowPieces(i)).ToList();
+                }
+
                 tiles.Add(board.allShapeTiles[column, i]);
-                board.allShapeTiles[column, i].GetComponent<ShapeTile>().isMatched = true;
+                tile.isMatched = true;
             }
         }
         return tiles;
@@ -251,8 +259,16 @@ public class FindMatches : MonoBehaviour
         {
             if (board.allShapeTiles[i, row] != null)
             {
+                ShapeTile tile = board.allShapeTiles[i, row].GetComponent<ShapeTile>();
+
+                // Check to see if one of the tiles happens to be a column bomb, if so -> union those pieces to the tiles list
+                if (tile.isColumnBomb)
+                {
+                    tiles.Union(GetColumnPieces(i)).ToList();
+                }
+
                 tiles.Add(board.allShapeTiles[i, row]);
-                board.allShapeTiles[i, row].GetComponent<ShapeTile>().isMatched = true;
+                tile.isMatched = true;
             }
         }
         return tiles;
