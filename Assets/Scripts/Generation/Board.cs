@@ -37,16 +37,20 @@ public class Board : MonoBehaviour
     public GameObject[] shapeTiles; // The shape tiles to be instantiated
     public TileType[] boardLayout;
     public GameObject destroyEffect;
-   
-    private bool [,] blankSpaces;  // An array of all of the background tiles
+
+    private bool[,] blankSpaces;  // An array of all of the background tiles
     private BackgroundTile[,] breakableTiles; // An array all of the breakable tiles
     public GameObject[,] allShapeTiles; // An array of all of the shape tiles
     public ShapeTile currentTile;
     private FindMatches findMatches;
     private ScoreManager scoreManager;
-
+    [Space(5)]
+    [Header("Score")]
     public int basePieceValue = 20;
     private int streakValue = 1;
+    [Space(5)]
+    [Header("Time Delays")]
+    public float refillDelay = 0.5f;
 
     void Start()
     {
@@ -385,7 +389,7 @@ public class Board : MonoBehaviour
                 }
             }
         }
-        yield return new WaitForSeconds(.4f);
+        yield return new WaitForSeconds(refillDelay * 0.5f);
         StartCoroutine(FillBoardCo());
     }
 
@@ -413,7 +417,7 @@ public class Board : MonoBehaviour
             nullCount = 0;
         }
 
-        yield return new WaitForSeconds(.4f);
+        yield return new WaitForSeconds(refillDelay * 0.5f);
         StartCoroutine(FillBoardCo());
     }
 
@@ -432,6 +436,19 @@ public class Board : MonoBehaviour
                     // Instantiate a new tile in it's place
                     Vector2 tempPosition = new Vector2(i, j + offSet);
                     int tileToUse = Random.Range(0, shapeTiles.Length);
+
+                    // Make sure we arent placing a piece into a spot where there isnt a match
+                    int maxIterations = 0;
+                    while (MatchesAt(i, j, shapeTiles[tileToUse]) && maxIterations < 100)
+                    {
+                        // if there is a match, increase iterations
+                        maxIterations++;
+                        // re-assign the tileToUse
+                        tileToUse = Random.Range(0, shapeTiles.Length);
+                    }
+                    // Reset iterations
+                    maxIterations = 0;
+
                     GameObject piece = Instantiate(shapeTiles[tileToUse], tempPosition, Quaternion.identity);
                     allShapeTiles[i, j] = piece;
                     piece.GetComponent<ShapeTile>().row = j;
@@ -470,22 +487,22 @@ public class Board : MonoBehaviour
         // Call the Refill Board function
         RefillBoard();
         // Wait for half a second
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(refillDelay);
 
         // While MatchesOnBoard returns true
         while (MatchesOnBoard())
         {
             // Increase the streak value
             streakValue ++;
-            // Wait for half a second
-            yield return new WaitForSeconds(.5f);
             // Then call the DestroyMatches function
             DestroyMatches();
+            // Wait for half a second
+            yield return new WaitForSeconds(2 * refillDelay);
         }
         // Clear the current matches list to prevent any mistaken match 7 column/ row bombs
         findMatches.currentMatches.Clear();
         // Wait for half a second
-        yield return new WaitForSeconds(.2f);
+        yield return new WaitForSeconds(refillDelay);
 
         // Finding deadlock
         if (IsDeadlocked())

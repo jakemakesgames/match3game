@@ -571,11 +571,50 @@ MonoBehaviour:
   - {fileID: 48000571917110242, guid: 2d47b469b228e1d41b2210fd804771b7, type: 3}
   - {fileID: 3262339209531394532, guid: 306d039e837a77b419dbe57234df17e3, type: 3}
   - {fileID: 6036299159938204525, guid: ed710e3f1f9f9b442a78c5d7189f0115, type: 3}
-  boardLayout: []
+  - {fileID: 6036299159938204525, guid: ed710e3f1f9f9b442a78c5d7189f0115, type: 3}
+  - {fileID: 6036299159938204525, guid: ed710e3f1f9f9b442a78c5d7189f0115, type: 3}
+  boardLayout:
+  - x: 0
+    y: 0
+    tileKind: 1
+  - x: 0
+    y: 7
+    tileKind: 1
+  - x: 5
+    y: 0
+    tileKind: 1
+  - x: 5
+    y: 7
+    tileKind: 1
+  - x: 2
+    y: 3
+    tileKind: 1
+  - x: 2
+    y: 4
+    tileKind: 1
+  - x: 3
+    y: 3
+    tileKind: 1
+  - x: 3
+    y: 4
+    tileKind: 1
+  - x: 2
+    y: 2
+    tileKind: 0
+  - x: 2
+    y: 5
+    tileKind: 0
+  - x: 3
+    y: 2
+    tileKind: 0
+  - x: 3
+    y: 5
+    tileKind: 0
   destroyEffect: {fileID: 1700846870748151439, guid: 384ef02bbcf352949aa371db91cb8345,
     type: 3}
   currentTile: {fileID: 0}
   basePieceValue: 20
+  refillDelay: 0.5
 --- !u!4 &1766545131
 Transform:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ TagManager:
   - PolygonTile
   - SquareTile
   - TriangleTile
+  - ColourBombTile
   layers:
   - Default
   - TransparentFX

@@ -213,8 +213,11 @@ public class FindMatches : MonoBehaviour
                 // Check to see if the piece is inside the board
                 if(i >= 0 && i < board.width && j >= 0 && j < board.height)
                 {
-                    tiles.Add(board.allShapeTiles[i, j]);
-                    board.allShapeTiles[i, j].GetComponent<ShapeTile>().isMatched = true;
+                    if (board.allShapeTiles[i, j] != null)
+                    {
+                        tiles.Add(board.allShapeTiles[i, j]);
+                        board.allShapeTiles[i, j].GetComponent<ShapeTile>().isMatched = true;
+                    }
                 }
             }
         }

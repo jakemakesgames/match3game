@@ -430,6 +430,8 @@ public class ShapeTile : MonoBehaviour
         isColourBomb = true;
         GameObject colour = Instantiate(colourBomb, transform.position, Quaternion.identity);
         colour.transform.parent = this.transform;
+        // Change tag of colour bomb
+        this.gameObject.tag = "ColourBombTile";
     }
 
     // Make an Adjacent bomb
