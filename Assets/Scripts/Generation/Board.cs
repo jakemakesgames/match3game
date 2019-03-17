@@ -333,8 +333,7 @@ public class Board : MonoBehaviour
                 }
             }
 
-            // -----> SOUND CODE <----- \\
-            /*
+            
             // Does the soundmanager exist
             if (soundManager != null)
             {
@@ -344,8 +343,7 @@ public class Board : MonoBehaviour
             {
                 return;
             }
-            */
-            // -----> SOUND CODE <----- \\
+            
 
             // Instantiate Particle effect
             GameObject particle = Instantiate(destroyEffect, allShapeTiles[column, row].transform.position, Quaternion.identity);
