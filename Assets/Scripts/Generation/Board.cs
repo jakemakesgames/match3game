@@ -51,10 +51,13 @@ public class Board : MonoBehaviour
     [Space(5)]
     [Header("Time Delays")]
     public float refillDelay = 0.5f;
+    [Space(5)]
+    private SoundManager soundManager;
 
     void Start()
     {
         findMatches = FindObjectOfType<FindMatches>(); // Initialise the FindMatches component
+        soundManager = FindObjectOfType<SoundManager>(); // Initialise the Sound Manager
         scoreManager = FindObjectOfType<ScoreManager>(); // Initialise the Score Manager
         breakableTiles = new BackgroundTile[width, height]; // Initialise the breakableTiles array
         blankSpaces = new bool [width, height]; // Initialise the blankSpaces array
@@ -330,8 +333,22 @@ public class Board : MonoBehaviour
                 }
             }
 
+            // -----> SOUND CODE <----- \\
+            /*
+            // Does the soundmanager exist
+            if (soundManager != null)
+            {
+                soundManager.PlayRandomDestroyNoise();
+            }
+            else
+            {
+                return;
+            }
+            */
+            // -----> SOUND CODE <----- \\
+
             // Instantiate Particle effect
-            GameObject particle =Instantiate(destroyEffect, allShapeTiles[column, row].transform.position, Quaternion.identity);
+            GameObject particle = Instantiate(destroyEffect, allShapeTiles[column, row].transform.position, Quaternion.identity);
             Destroy(particle, 1f);
 
             // Destroy the correct tile at the column and row position
