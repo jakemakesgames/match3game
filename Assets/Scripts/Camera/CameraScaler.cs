@@ -8,6 +8,7 @@ public class CameraScaler : MonoBehaviour
     public float cameraOffset;
     public float aspectRatio = 0.625f;
     public float padding = 2;
+    public float yOffSet = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +26,7 @@ public class CameraScaler : MonoBehaviour
     void RepositionCamera(float x, float y)
     {
         // Create a new temporary position
-        Vector3 tempPosition = new Vector3 (x/2, y/2, cameraOffset);
+        Vector3 tempPosition = new Vector3 (x/2, y/2 + yOffSet, cameraOffset);
         // Set the camera's position equal to the tempPosition
         transform.position = tempPosition;
 

@@ -8,7 +8,6 @@ public enum GameState
     move
 }
 
-
 public enum TileKind
 {
     Breakable,
@@ -44,10 +43,15 @@ public class Board : MonoBehaviour
     public GameObject[,] allShapeTiles; // An array of all of the shape tiles
     public ShapeTile currentTile;
     private FindMatches findMatches;
+    private ScoreManager scoreManager;
+
+    public int basePieceValue = 20;
+    private int streakValue = 1;
 
     void Start()
     {
-        findMatches = FindObjectOfType<FindMatches>();
+        findMatches = FindObjectOfType<FindMatches>(); // Initialise the FindMatches component
+        scoreManager = FindObjectOfType<ScoreManager>(); // Initialise the Score Manager
         breakableTiles = new BackgroundTile[width, height]; // Initialise the breakableTiles array
         blankSpaces = new bool [width, height]; // Initialise the blankSpaces array
         allShapeTiles = new GameObject[width, height]; // Initialise the allShapeTiles array
@@ -99,8 +103,11 @@ public class Board : MonoBehaviour
                 {
                     // Create a new temporary variable - a Vector2 for the W & H pos
                     Vector2 tempPosition = new Vector2(i, j + offSet);
+
+                    Vector2 tilePosition = new Vector2(i, j);
+
                     // Instantiate the backgroundTilePrefab as a GameObject
-                    GameObject backgroundTile = Instantiate(backgroundTilePrefab, tempPosition, Quaternion.identity) as GameObject;
+                    GameObject backgroundTile = Instantiate(backgroundTilePrefab, tilePosition, Quaternion.identity) as GameObject;
                     // Set the Parent object of the backgroundTile to the Board GameObject
                     backgroundTile.transform.parent = this.transform;
                     // Set the name of each background tile equal to their width and height position on the grid
@@ -325,6 +332,8 @@ public class Board : MonoBehaviour
 
             // Destroy the correct tile at the column and row position
             Destroy(allShapeTiles[column, row]);
+            //Increase score
+            scoreManager.IncreaseScore(basePieceValue * streakValue);
             // Set that coord to null (leaving it empty)
             allShapeTiles[column, row] = null;
         }
@@ -466,6 +475,8 @@ public class Board : MonoBehaviour
         // While MatchesOnBoard returns true
         while (MatchesOnBoard())
         {
+            // Increase the streak value
+            streakValue ++;
             // Wait for half a second
             yield return new WaitForSeconds(.5f);
             // Then call the DestroyMatches function
@@ -485,6 +496,8 @@ public class Board : MonoBehaviour
 
         // Set the current game state to move
         currentState = GameState.move;
+        // Reset the streak value
+        streakValue = 1;
     }
 
     // Helper method to switch pieces

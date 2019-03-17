@@ -68,9 +68,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 433d2df6f060ea548a8e6f49323fe182, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.19607843}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.21568628}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -92,10 +92,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 458224904427f5249af464592314f3cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tiles:
-  - {fileID: 3243907077133750565, guid: 9cc3cce4a0af266448cbcdc276cf3c2b, type: 3}
-  - {fileID: 3239966394059518891, guid: 586a28d50c9cdb149803772e1db07b07, type: 3}
-  - {fileID: 6111634972526330764, guid: 61e3522fdd0dc7b4eba96a6756795b0d, type: 3}
-  - {fileID: 48000571917110242, guid: 2d47b469b228e1d41b2210fd804771b7, type: 3}
-  - {fileID: 3262339209531394532, guid: 306d039e837a77b419dbe57234df17e3, type: 3}
-  - {fileID: 6036299159938204525, guid: ed710e3f1f9f9b442a78c5d7189f0115, type: 3}
+  hitPoints: 1
