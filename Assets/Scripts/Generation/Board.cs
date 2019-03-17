@@ -37,7 +37,6 @@ public class Board : MonoBehaviour
     public GameObject[] shapeTiles; // The shape tiles to be instantiated
     public TileType[] boardLayout;
     public GameObject destroyEffect;
-
     private bool[,] blankSpaces;  // An array of all of the background tiles
     private BackgroundTile[,] breakableTiles; // An array all of the breakable tiles
     public GameObject[,] allShapeTiles; // An array of all of the shape tiles
@@ -48,6 +47,7 @@ public class Board : MonoBehaviour
     [Header("Score")]
     public int basePieceValue = 20;
     private int streakValue = 1;
+    public int[] scoreGoals;
     [Space(5)]
     [Header("Time Delays")]
     public float refillDelay = 0.5f;
