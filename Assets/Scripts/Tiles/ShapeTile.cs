@@ -21,6 +21,7 @@ public class ShapeTile : MonoBehaviour
     [Space(5)]
     public GameObject otherShapeTile;
     private FindMatches findMatches;
+    private HintManager hintManager;
     // Handling Player Touch positions
     private Vector2 firstTouchPosition;
     private Vector2 finalTouchPosition;
@@ -58,6 +59,7 @@ public class ShapeTile : MonoBehaviour
         // Set the board component equal to the GameObject in the scene with the Board script attached
         board = FindObjectOfType<Board>();
         findMatches = FindObjectOfType<FindMatches>();
+        hintManager = FindObjectOfType<HintManager>();
 
         #region OLD CODE
         // Set the targetX and targetY values as this GameObjects X and Y positions (cast into a int)
@@ -143,6 +145,12 @@ public class ShapeTile : MonoBehaviour
 
     private void OnMouseDown()
     {
+        // Destroy hint
+        if (hintManager != null)
+        {
+            hintManager.DestroyHint();
+        }
+
         // If the boards game state is equal to move
         if (board.currentState == GameState.move)
         {
