@@ -48,6 +48,7 @@ public class Board : MonoBehaviour
     public int basePieceValue = 20;
     private int streakValue = 1;
     public int[] scoreGoals;
+    private GoalManager goalManager;
     [Space(5)]
     [Header("Time Delays")]
     public float refillDelay = 0.5f;
@@ -56,6 +57,7 @@ public class Board : MonoBehaviour
 
     void Start()
     {
+        goalManager = FindObjectOfType<GoalManager>();
         findMatches = FindObjectOfType<FindMatches>(); // Initialise the FindMatches component
         soundManager = FindObjectOfType<SoundManager>(); // Initialise the Sound Manager
         scoreManager = FindObjectOfType<ScoreManager>(); // Initialise the Score Manager
@@ -333,6 +335,14 @@ public class Board : MonoBehaviour
                 }
             }
 
+            // Check for goals
+            if (goalManager != null)
+            {
+                // Compare tag
+                goalManager.CompareGoal(allShapeTiles[column, row].tag.ToString());
+                // Update goal
+                goalManager.UpdateGoals();
+            }
             
             // Does the soundmanager exist
             if (soundManager != null)

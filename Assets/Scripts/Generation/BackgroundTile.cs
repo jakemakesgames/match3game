@@ -7,8 +7,11 @@ public class BackgroundTile : MonoBehaviour
     public int hitPoints; // how many swipes it takes in order to break
     private SpriteRenderer spriteRenderer;
 
+    private GoalManager goalManager;
+
     void Start()
     {
+        goalManager = FindObjectOfType<GoalManager>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -16,6 +19,11 @@ public class BackgroundTile : MonoBehaviour
     {
         if (hitPoints <= 0)
         {
+            if (goalManager != null)
+            {
+                goalManager.CompareGoal(this.gameObject.tag);
+                goalManager.UpdateGoals();
+            }
             Destroy(this.gameObject);
         }
     }

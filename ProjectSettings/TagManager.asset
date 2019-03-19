@@ -11,6 +11,7 @@ TagManager:
   - SquareTile
   - TriangleTile
   - ColourBombTile
+  - BreakableTile
   layers:
   - Default
   - TransparentFX
