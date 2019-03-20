@@ -5,7 +5,10 @@ using UnityEngine;
 public enum GameState
 {
     wait,
-    move
+    move,
+    win,
+    lose,
+    pause
 }
 
 public enum TileKind
@@ -57,7 +60,10 @@ public class Board : MonoBehaviour
 
     void Start()
     {
-        goalManager = FindObjectOfType<GoalManager>();
+        // Ensure that the game starts out being paused
+        currentState = GameState.pause;
+
+        goalManager = FindObjectOfType<GoalManager>(); // Initialise the GoalManager component
         findMatches = FindObjectOfType<FindMatches>(); // Initialise the FindMatches component
         soundManager = FindObjectOfType<SoundManager>(); // Initialise the Sound Manager
         scoreManager = FindObjectOfType<ScoreManager>(); // Initialise the Score Manager

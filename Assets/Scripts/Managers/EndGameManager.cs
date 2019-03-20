@@ -20,16 +20,19 @@ public class EndGameRequirements
 
 public class EndGameManager : MonoBehaviour
 {
-    public EndGameRequirements requirements; // Reference EndGameRequirements
-    public GameObject movesLabel;
-    public GameObject timeLabel;
-    public Text counterText;
-    public int currentCounterValue;
-    private float timerSeconds;
+    public EndGameRequirements requirements; // A reference to the EndGameRequirements Class
+    public GameObject movesLabel; // A reference to the Moves Label UI element
+    public GameObject timeLabel; // A reference to the Time Label UI element
+    public Text counterText; // The moves/ time counter text
+    public int currentCounterValue; // The current counter value
+    private float timerSeconds; // The countdown timer (for time label)
+
+    private Board board; // Make a ref to board
 
     // Start is called before the first frame update
     void Start()
     {
+        board = FindObjectOfType<Board>();
         // Call the SetUpGame function
         SetUpGame();
     }
@@ -61,15 +64,24 @@ public class EndGameManager : MonoBehaviour
 
     public void DecreaseCounterValue()
     {
-        // Decrease the value, update the text
-        currentCounterValue--;
-        counterText.text = "" + currentCounterValue;
-
-        if (currentCounterValue <= 0)
+        // If the game is NOT in the pause state
+        if (board.currentState != GameState.pause)
         {
-            Debug.Log("Try Again...");
-            currentCounterValue = 0;
+            // Decrease the value, update the text
+            currentCounterValue--;
             counterText.text = "" + currentCounterValue;
+
+            // If the currentCounterValue is less than or equal to 0
+            if (currentCounterValue <= 0)
+            {
+                // Set the game state to lose
+                board.currentState = GameState.lose;
+                // The player has no completed the level
+                // Show end level UI
+                Debug.Log("Try Again...");
+                currentCounterValue = 0;
+                counterText.text = "" + currentCounterValue;
+            }
         }
     }
 

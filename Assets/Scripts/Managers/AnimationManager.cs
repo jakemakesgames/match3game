@@ -14,6 +14,17 @@ public class AnimationManager : MonoBehaviour
             // Trigger both "Out" bools to true
             fadePanelAnim.SetBool("Out", true);
             goalPanelAnim.SetBool("Out", true);
+            StartCoroutine(GameStartCo());
         }
+    }
+
+    IEnumerator GameStartCo()
+    {
+        // Wait for 1 second
+        yield return new WaitForSeconds(1f);
+        // Find the board
+        Board board = FindObjectOfType<Board>();
+        // Set the game state
+        board.currentState = GameState.move;
     }
 }
