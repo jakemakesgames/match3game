@@ -22,9 +22,12 @@ public class GoalManager : MonoBehaviour
     public GameObject goalIntroParent;
     public GameObject goalGameParent;
 
+    private EndGameManager endGame;
+
     // Start is called before the first frame update
     void Start()
     {
+        endGame = FindObjectOfType<EndGameManager>();
         SetupGoals();
     }
 
@@ -70,7 +73,10 @@ public class GoalManager : MonoBehaviour
         }
         if (goalsCompleted >= levelGoals.Length)
         {
-            Debug.Log("Level Completed!");
+            if (endGame != null)
+            {
+                endGame.WinGame();
+            }
         }
     }
 

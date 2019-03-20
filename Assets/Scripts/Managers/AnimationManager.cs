@@ -18,6 +18,12 @@ public class AnimationManager : MonoBehaviour
         }
     }
 
+    public void GameOver()
+    {
+        fadePanelAnim.SetBool("Out", false);
+        fadePanelAnim.SetBool("GameOver", true);
+    }
+
     IEnumerator GameStartCo()
     {
         // Wait for 1 second

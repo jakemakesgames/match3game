@@ -27,6 +27,10 @@ public class EndGameManager : MonoBehaviour
     public int currentCounterValue; // The current counter value
     private float timerSeconds; // The countdown timer (for time label)
 
+    [Header("Win/ Lose Panels")]
+    public GameObject youWinPanel;
+    public GameObject tryAgainPanel;
+
     private Board board; // Make a ref to board
 
     // Start is called before the first frame update
@@ -74,15 +78,37 @@ public class EndGameManager : MonoBehaviour
             // If the currentCounterValue is less than or equal to 0
             if (currentCounterValue <= 0)
             {
-                // Set the game state to lose
                 board.currentState = GameState.lose;
-                // The player has no completed the level
-                // Show end level UI
-                Debug.Log("Try Again...");
-                currentCounterValue = 0;
-                counterText.text = "" + currentCounterValue;
+                LoseGame();
             }
         }
+    }
+
+    public void WinGame()
+    {
+        youWinPanel.SetActive(true);
+        board.currentState = GameState.win;
+        currentCounterValue = 0;
+        counterText.text = "" + currentCounterValue;
+        AnimationManager animManager = FindObjectOfType<AnimationManager>();
+        animManager.GameOver();
+
+    }
+
+    public void LoseGame()
+    {
+        // Set the try again panel to true
+        tryAgainPanel.SetActive(true);
+
+        // Set the game state to lose
+        board.currentState = GameState.lose; // WHY U NOT WORK????
+        // The player has no completed the level
+        // Show end level UI
+        Debug.Log("Try Again...");
+        currentCounterValue = 0;
+        counterText.text = "" + currentCounterValue;
+        AnimationManager animManager = FindObjectOfType<AnimationManager>();
+        animManager.GameOver();
     }
 
     // Update is called once per frame
