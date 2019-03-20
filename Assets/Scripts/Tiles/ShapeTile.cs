@@ -22,6 +22,7 @@ public class ShapeTile : MonoBehaviour
     public GameObject otherShapeTile;
     private FindMatches findMatches;
     private HintManager hintManager;
+    private EndGameManager endGameManager;
     // Handling Player Touch positions
     private Vector2 firstTouchPosition;
     private Vector2 finalTouchPosition;
@@ -58,6 +59,7 @@ public class ShapeTile : MonoBehaviour
 
         // Set the board component equal to the GameObject in the scene with the Board script attached
         board = FindObjectOfType<Board>();
+        endGameManager = FindObjectOfType<EndGameManager>();
         findMatches = FindObjectOfType<FindMatches>();
         hintManager = FindObjectOfType<HintManager>();
 
@@ -346,6 +348,16 @@ public class ShapeTile : MonoBehaviour
             }
             else
             {
+                // If the endGameManager was assigned
+                if (endGameManager != null)
+                {
+                    // If the game type is Moves
+                    if (endGameManager.requirements.gameType == GameType.Moves)
+                    {
+                        // Decrease counter
+                        endGameManager.DecreaseCounterValue();
+                    }
+                }
                 board.DestroyMatches();
             }
             //otherShapeTile = null;
