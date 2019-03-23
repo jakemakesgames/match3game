@@ -28,6 +28,10 @@ public class TileType
 
 public class Board : MonoBehaviour
 {
+    [Header("Scriptable Objects")]
+    public World world;
+    public int level;
+
     [Header("Board Variables")]
     public GameState currentState = GameState.move; // Setting the current state value (for state machine)
     public int width; // The width of the board
@@ -57,6 +61,30 @@ public class Board : MonoBehaviour
     public float refillDelay = 0.5f;
     [Space(5)]
     private SoundManager soundManager;
+
+    private void Awake()
+    {
+        // If the world reference is not null
+        if (world != null)
+        {
+            if (level < world.levels.Length)
+            {
+                // If the level reference we're trying to access is not null
+                if (world.levels[level] != null)
+                {
+                    // set the width and the height of the board
+                    width = world.levels[level].width;
+                    height = world.levels[level].height;
+                    // set which tiles will be found in the level
+                    shapeTiles = world.levels[level].shapeTiles;
+                    scoreGoals = world.levels[level].scoreGoals;
+                    // set the board layout (are there any blank spaces or breakables?)
+                    boardLayout = world.levels[level].boardLayout;
+
+                }
+            }
+        }
+    }
 
     void Start()
     {

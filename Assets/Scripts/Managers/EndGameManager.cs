@@ -20,6 +20,7 @@ public class EndGameRequirements
 
 public class EndGameManager : MonoBehaviour
 {
+    
     public EndGameRequirements requirements; // A reference to the EndGameRequirements Class
     public GameObject movesLabel; // A reference to the Moves Label UI element
     public GameObject timeLabel; // A reference to the Time Label UI element
@@ -37,8 +38,26 @@ public class EndGameManager : MonoBehaviour
     void Start()
     {
         board = FindObjectOfType<Board>();
+        // Call the SetGameType function
+        SetGameType();
         // Call the SetUpGame function
         SetUpGame();
+    }
+
+    void SetGameType()
+    {
+        if (board.world != null)
+        {
+            if (board.level < board.world.levels.Length)
+            {
+                if (board.world.levels[board.level] != null)
+                {
+                    // set the end game requirements
+                    requirements = board.world.levels[board.level].endGameRequirements;
+                }
+            }
+            
+        }
     }
 
     // Check the gameType and set the UI accordingly

@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fe31a47b1830074eac313de446121c7, type: 3}
+  m_Name: Level2
+  m_EditorClassIdentifier: 
+  width: 8
+  height: 8
+  boardLayout: []
+  shapeTiles:
+  - {fileID: 3243907077133750565, guid: 9cc3cce4a0af266448cbcdc276cf3c2b, type: 3}
+  - {fileID: 3239966394059518891, guid: 586a28d50c9cdb149803772e1db07b07, type: 3}
+  - {fileID: 6111634972526330764, guid: 61e3522fdd0dc7b4eba96a6756795b0d, type: 3}
+  - {fileID: 48000571917110242, guid: 2d47b469b228e1d41b2210fd804771b7, type: 3}
+  - {fileID: 3262339209531394532, guid: 306d039e837a77b419dbe57234df17e3, type: 3}
+  - {fileID: 6036299159938204525, guid: ed710e3f1f9f9b442a78c5d7189f0115, type: 3}
+  scoreGoals: f4010000ee020000e2040000
+  endGameRequirements:
+    gameType: 1
+    counterValue: 120
+  levelGoals:
+  - numberNeeded: 5
+    numberCollected: 0
+    goalSprite: {fileID: 21300000, guid: b8a1c46e3622a04408b4e56066e711f3, type: 3}
+    matchValue: TriangleTile
+  - numberNeeded: 5
+    numberCollected: 0
+    goalSprite: {fileID: 21300000, guid: b8a1c46e3622a04408b4e56066e711f3, type: 3}
+    matchValue: HexagonTile
+  - numberNeeded: 5
+    numberCollected: 0
+    goalSprite: {fileID: 21300000, guid: b8a1c46e3622a04408b4e56066e711f3, type: 3}
+    matchValue: PolygonTile
