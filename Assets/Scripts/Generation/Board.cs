@@ -64,6 +64,12 @@ public class Board : MonoBehaviour
 
     private void Awake()
     {
+        // reset the level to be whatever is in player prefs
+        if (PlayerPrefs.HasKey("Current Level"))
+        {
+            level = PlayerPrefs.GetInt("Current Level");
+        }
+
         // If the world reference is not null
         if (world != null)
         {
