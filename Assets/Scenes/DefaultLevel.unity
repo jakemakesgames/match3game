@@ -2633,7 +2633,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   world: {fileID: 11400000, guid: 5d21993c6ca0c17499b0b5a125502b4a, type: 2}
-  level: 2
+  level: 0
   currentState: 1
   width: 6
   height: 8
