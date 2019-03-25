@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class LevelButton : MonoBehaviour
 {
+    private GameData gameData;
+
     [Header("UI Elements")]
     public bool isActive; // is the current level locked or not?
     public Sprite activeSprite; // the sprite shown if the level is active
@@ -17,13 +19,21 @@ public class LevelButton : MonoBehaviour
     public int level; // keep track of what level this belongs to
     public GameObject confirmPanel; // get a reference to the confirm panel
 
+    private int starsActive; // how many stars are active?
+
     // Start is called before the first frame update
     void Start()
     {
+        // get a reference to the GameData
+        gameData = FindObjectOfType<GameData>();
+
         // complete the reference to the button image
         buttonImage = GetComponent<Image>();
         // complete the reference to the button component
         myButton = GetComponent<Button>();
+
+        LoadData();
+
         // call the ShowLevel method
         ShowLevel();
         // call the ActivateStars method
@@ -32,13 +42,31 @@ public class LevelButton : MonoBehaviour
         DecideSprite();
     }
 
+    void LoadData()
+    {
+        // check the game data - is the gameData present?
+        if (gameData != null)
+        {
+            // Decide if the level is active
+            if (gameData.saveData.isActive[level - 1])
+            {
+                isActive = true;
+            }
+            else
+            {
+                isActive = false;
+            }
+            // Decide how many stars to activate
+            starsActive = gameData.saveData.stars[level - 1];
+        }
+    }
+
     // activate or deativate the stars according to what the player has achieved
     void ActivateStars()
     {
-        //  -> COME BACK TO THIS LATER <- \\
-        for (int i = 0; i < stars.Length; i++)
+        for (int i = 0; i < starsActive; i++)
         {
-            stars[i].enabled = false;
+            stars[i].enabled = true;
         }
     }
 

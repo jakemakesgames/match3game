@@ -30,17 +30,15 @@ public class GameData : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+        // call the load method
+        Load();
     }
 
     private void OnDisable()
     {
         // call the Save method
         Save();
-    }
-
-    private void Start()
-    {
-        Load();
     }
 
     public void Save()
