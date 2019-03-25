@@ -5,37 +5,42 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-// game save data class
 [Serializable]
 public class SaveData
 {
     public bool[] isActive; // is the level active
-    public int[] highScores; // what are the high scores
-    public int[] stars; // how many stars does the player have?
+    public int[] highScores; // highscores the player has got
+    public int[] stars; // how many stars does the player have
 }
 
 public class GameData : MonoBehaviour
 {
     public static GameData gameData;
     public SaveData saveData;
-   
+
     void Awake()
     {
+        // Singleton Pattern
         // check to see if gameData is null
         if (gameData == null)
         {
             DontDestroyOnLoad(this.gameObject);
             gameData = this;
-        }
-        else
+        } else
         {
             Destroy(this.gameObject);
         }
     }
 
-    void Start()
+    private void OnDisable()
     {
-        
+        // call the Save method
+        Save();
+    }
+
+    private void Start()
+    {
+        Load();
     }
 
     public void Save()
@@ -44,33 +49,37 @@ public class GameData : MonoBehaviour
         BinaryFormatter formatter = new BinaryFormatter();
 
         // create a route from the program to the file
-        FileStream file = File.Open(Application.persistentDataPath + "/player.dat", FileMode.Open);
+        FileStream file = File.Open(Application.persistentDataPath + "/player.data", FileMode.Create);
 
-        // create a copy of save data
+        // create new player data
         SaveData data = new SaveData();
         data = saveData;
 
-        // do the saving - take formatter and serialise
+        // do the saving
         formatter.Serialize(file, data);
 
         // close the file
         file.Close();
-        Debug.Log("Saved");
+
+        // debug log 
+        Debug.Log("Saved!");
     }
 
     public void Load()
     {
-
-    }
-
-    private void OnDisable()
-    {
-        Save();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // check if the save game file exists
+        if (File.Exists(Application.persistentDataPath + "/player.data"))
+        {
+            // create a binary formatter
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream file = File.Open(Application.persistentDataPath + "/player.data", FileMode.Open);
+            // change player data
+            saveData = formatter.Deserialize(file) as SaveData;
+            // close file
+            file.Close();
+            // debug log
+            Debug.Log("Loaded!");
+        }
+        //
     }
 }
