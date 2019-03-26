@@ -2640,7 +2640,7 @@ GameObject:
   - component: {fileID: 1766545132}
   m_Layer: 0
   m_Name: Board
-  m_TagString: Untagged
+  m_TagString: Board
   m_Icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2682,7 +2682,7 @@ MonoBehaviour:
   currentTile: {fileID: 0}
   basePieceValue: 20
   scoreGoals: e8030000d0070000b80b0000
-  refillDelay: 0.5
+  refillDelay: 0.25
 --- !u!4 &1766545131
 Transform:
   m_ObjectHideFlags: 0

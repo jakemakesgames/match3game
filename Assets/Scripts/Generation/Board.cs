@@ -251,8 +251,61 @@ public class Board : MonoBehaviour
     }
 
     // Check to see how many pieces in list are in one row or column
-    private bool ColumnOrRow()
+    private int ColumnOrRow()
     {
+        // make a copy of the current matches
+        List<GameObject> matchCopy = findMatches.currentMatches as List<GameObject>;
+        // cycle through all of matchCopy and decide if a bombs needs to be made
+        for (int i = 0; i < matchCopy.Count; i++)
+        {
+            // store the spaeTile[i]
+            ShapeTile thisTile = matchCopy[i].GetComponent<ShapeTile>();
+            // store the column and row
+            int column = thisTile.column;
+            int row = thisTile.row;
+            int columnMatch = 0;
+            int rowMatch = 0;
+            // cycle through the rest of the pieces and compare
+            for (int j = 0; j < matchCopy.Count; j++)
+            {
+                // store the next tile
+                ShapeTile nextTile = matchCopy[j].GetComponent<ShapeTile>();
+                // is the next tile the same as this tile
+                if (nextTile == thisTile)
+                {
+                    continue;
+                }
+                // check to see if it's a column match
+                if (nextTile.column == thisTile.column && nextTile.CompareTag(thisTile.tag))
+                {
+                    columnMatch++;
+                }
+                // check to see if it's a row match
+                if (nextTile.row == thisTile.row && nextTile.CompareTag(thisTile.tag))
+                {
+                    rowMatch++;
+                }
+            }
+            // return 1 if its colour bomb
+            if (columnMatch == 4 || rowMatch == 4)
+            {
+                return 1;
+            }
+            // return 2 if its adjacent
+            if (columnMatch == 2 && rowMatch == 2)
+            {
+                return 2;
+            }
+            // return 3 if its column or row
+            if (columnMatch == 3 || rowMatch == 3)
+            {
+                return 3;
+            }
+        }
+
+        return 0;
+        #region OLD CODE
+        /*
         int numberHorizontal = 0;
         int numberVertical = 0;
 
@@ -274,17 +327,18 @@ public class Board : MonoBehaviour
             }
         }
         return (numberVertical == 5 || numberHorizontal == 5);
+        */
+        #endregion
     }
 
     private void CheckToMakeBombs()
     {
-        if (findMatches.currentMatches.Count == 4 || findMatches.currentMatches.Count == 7)
+        // how many objects are in findMatches/ currenmatcher
+        if (findMatches.currentMatches.Count > 3)
         {
-            findMatches.CheckBombs();
-        }
-        if (findMatches.currentMatches.Count == 5 || findMatches.currentMatches.Count == 8)
-        {
-            if (ColumnOrRow())
+            // what type of match has been made
+            int typeOfMatch = ColumnOrRow();
+            if (typeOfMatch == 1)
             {
                 // Make a colour bomb
                 // Is the current tile matched?
@@ -299,7 +353,8 @@ public class Board : MonoBehaviour
                             currentTile.MakeColourBomb();
                         }
                     }
-                    else {
+                    else
+                    {
                         if (currentTile.otherShapeTile != null)
                         {
                             ShapeTile otherTile = currentTile.otherShapeTile.GetComponent<ShapeTile>();
@@ -314,7 +369,9 @@ public class Board : MonoBehaviour
                         }
                     }
                 }
-            } else {
+            }
+            else if (typeOfMatch == 2)
+            {
                 // Make an adjacent bomb
                 // Is the current tile matched?
                 // Unmatch it and turn it into a colour bomb
@@ -344,8 +401,85 @@ public class Board : MonoBehaviour
                         }
                     }
                 }
-
             }
+            else if (typeOfMatch == 3)
+            {
+                findMatches.CheckBombs();
+            }
+
+            #region OLD CODE
+            /*
+            if (findMatches.currentMatches.Count == 4 || findMatches.currentMatches.Count == 7)
+            {
+                findMatches.CheckBombs();
+            }
+            if (findMatches.currentMatches.Count == 5 || findMatches.currentMatches.Count == 8)
+            {
+                if (ColumnOrRow())
+                {
+                    // Make a colour bomb
+                    // Is the current tile matched?
+                    // Unmatch it and turn it into a colour bomb
+                    if (currentTile != null)
+                    {
+                        if (currentTile.isMatched)
+                        {
+                            if (!currentTile.isColourBomb)
+                            {
+                                currentTile.isMatched = false;
+                                currentTile.MakeColourBomb();
+                            }
+                        }
+                        else {
+                            if (currentTile.otherShapeTile != null)
+                            {
+                                ShapeTile otherTile = currentTile.otherShapeTile.GetComponent<ShapeTile>();
+                                if (otherTile.isMatched)
+                                {
+                                    if (!otherTile.isColourBomb)
+                                    {
+                                        otherTile.isMatched = false;
+                                        otherTile.MakeColourBomb();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    // Make an adjacent bomb
+                    // Is the current tile matched?
+                    // Unmatch it and turn it into a colour bomb
+                    if (currentTile != null)
+                    {
+                        if (currentTile.isMatched)
+                        {
+                            if (!currentTile.isAdjacentBomb)
+                            {
+                                currentTile.isMatched = false;
+                                currentTile.MakeAdjacentBomb();
+                            }
+                        }
+                        else
+                        {
+                            if (currentTile.otherShapeTile != null)
+                            {
+                                ShapeTile otherTile = currentTile.otherShapeTile.GetComponent<ShapeTile>();
+                                if (otherTile.isMatched)
+                                {
+                                    if (!otherTile.isAdjacentBomb)
+                                    {
+                                        otherTile.isMatched = false;
+                                        otherTile.MakeAdjacentBomb();
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+            */
+            #endregion
         }
     }
 
@@ -549,10 +683,10 @@ public class Board : MonoBehaviour
 
     private IEnumerator FillBoardCo()
     {
-        // Call the Refill Board function
-        RefillBoard();
         // Wait for half a second
         yield return new WaitForSeconds(refillDelay);
+        // Call the Refill Board function
+        RefillBoard();
 
         // While MatchesOnBoard returns true
         while (MatchesOnBoard())

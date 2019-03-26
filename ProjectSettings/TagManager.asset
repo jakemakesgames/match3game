@@ -12,6 +12,7 @@ TagManager:
   - TriangleTile
   - ColourBombTile
   - BreakableTile
+  - Board
   layers:
   - Default
   - TransparentFX

@@ -58,7 +58,8 @@ public class ShapeTile : MonoBehaviour
         isAdjacentBomb = false;
 
         // Set the board component equal to the GameObject in the scene with the Board script attached
-        board = FindObjectOfType<Board>();
+        board = GameObject.FindWithTag("Board").GetComponent<Board>();
+        //board = FindObjectOfType<Board>();
         endGameManager = FindObjectOfType<EndGameManager>();
         findMatches = FindObjectOfType<FindMatches>();
         hintManager = FindObjectOfType<HintManager>();
@@ -423,34 +424,48 @@ public class ShapeTile : MonoBehaviour
     // This method creates a row bomb
     public void MakeRowBomb()
     {
-        isRowBomb = true;
-        GameObject arrow = Instantiate(rowArrow, transform.position, Quaternion.identity);
-        arrow.transform.parent = this.transform;
+        if (!isColumnBomb && !isColourBomb && !isAdjacentBomb)
+        {
+            isRowBomb = true;
+            GameObject arrow = Instantiate(rowArrow, transform.position, Quaternion.identity);
+            arrow.transform.parent = this.transform;
+        }
+        
     }
 
     // This method creates a column bomb
     public void MakeColumnBomb()
     {
-        isColumnBomb = true;
-        GameObject arrow = Instantiate(columnArrow, transform.position, Quaternion.identity);
-        arrow.transform.parent = this.transform;
+        if (!isRowBomb && !isColourBomb && !isAdjacentBomb)
+        {
+            isColumnBomb = true;
+            GameObject arrow = Instantiate(columnArrow, transform.position, Quaternion.identity);
+            arrow.transform.parent = this.transform;
+        }
     }
 
     // This method creates a colour bomb
     public void MakeColourBomb()
     {
-        isColourBomb = true;
-        GameObject colour = Instantiate(colourBomb, transform.position, Quaternion.identity);
-        colour.transform.parent = this.transform;
-        // Change tag of colour bomb
-        this.gameObject.tag = "ColourBombTile";
+        if (!isColumnBomb && !isRowBomb && !isAdjacentBomb)
+        {
+            isColourBomb = true;
+            GameObject colour = Instantiate(colourBomb, transform.position, Quaternion.identity);
+            colour.transform.parent = this.transform;
+            // Change tag of colour bomb
+            this.gameObject.tag = "ColourBombTile";
+        }
+        
     }
 
     // Make an Adjacent bomb
     public void MakeAdjacentBomb()
     {
-        isAdjacentBomb = true;
-        GameObject adjacent = Instantiate(adjacentBomb, transform.position, Quaternion.identity);
-        adjacent.transform.parent = this.transform;
+        if (!isColumnBomb && !isRowBomb && !isColourBomb)
+        {
+            isAdjacentBomb = true;
+            GameObject adjacent = Instantiate(adjacentBomb, transform.position, Quaternion.identity);
+            adjacent.transform.parent = this.transform;
+        }
     }
 }

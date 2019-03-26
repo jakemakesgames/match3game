@@ -35,6 +35,12 @@ public class GameData : MonoBehaviour
         Load();
     }
 
+    // this method takes care of saving the data once the player has closed the application
+    private void OnApplicationQuit()
+    {
+        Save();
+    }
+
     private void OnDisable()
     {
         // call the Save method
@@ -78,6 +84,16 @@ public class GameData : MonoBehaviour
             // debug log
             Debug.Log("Loaded!");
         }
-        //
+        else
+        {
+            // if the file doesn't exist - initialize it
+            saveData = new SaveData();
+            saveData.isActive = new bool [100]; // the values set here are the amount of levels in the game etc
+            saveData.stars = new int [100];
+            saveData.highScores = new int [100];
+            saveData.isActive[0] = true; // set the first level in the array true (so the first level will be unlocked)
+
+        }
+        
     }
 }
