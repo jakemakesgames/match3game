@@ -490,12 +490,6 @@ public class Board : MonoBehaviour
         // Check if shape is matched, destroy
         if (allShapeTiles[column, row].GetComponent<ShapeTile>().isMatched)
         {
-            // How many elements are in the matched pieces list from findmatches?
-            if (findMatches.currentMatches.Count >= 4)
-            {
-                // call the CheckToMakeBombs method
-                CheckToMakeBombs();
-            }
 
             // Does a tile need to break?
             if (breakableTiles[column, row] != null)
@@ -545,6 +539,15 @@ public class Board : MonoBehaviour
     // This method destroys the tiles after they have been matched
     public void DestroyMatches()
     {
+        // How many elements are in the matched pieces list from findmatches?
+        if (findMatches.currentMatches.Count >= 4)
+        {
+            // call the CheckToMakeBombs method
+            CheckToMakeBombs();
+        }
+
+        findMatches.currentMatches.Clear();
+
         // Cycle through all of the columns
         for (int i = 0; i < width; i++)
         {
@@ -557,7 +560,7 @@ public class Board : MonoBehaviour
                 }
             }
         }
-        findMatches.currentMatches.Clear();
+        
         //StartCoroutine(DecreaseRowCo());
         StartCoroutine(DecreaseRowCo2());
     }

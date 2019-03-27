@@ -24,8 +24,8 @@ public class ShapeTile : MonoBehaviour
     private HintManager hintManager;
     private EndGameManager endGameManager;
     // Handling Player Touch positions
-    private Vector2 firstTouchPosition;
-    private Vector2 finalTouchPosition;
+    private Vector2 firstTouchPosition = Vector2.zero;
+    private Vector2 finalTouchPosition = Vector2.zero;
     [Space(5)]
     [Header("Swipe Angles")]
     private Vector2 tempPosition;
@@ -112,9 +112,9 @@ public class ShapeTile : MonoBehaviour
             if (board.allShapeTiles[column, row] != this.gameObject)
             {
                 board.allShapeTiles[column, row] = this.gameObject;
-            }
-            // Call the FindAllMatches function on the FindMatches GameObject
-            findMatches.FindAllMatches();
+                // Call the FindAllMatches function on the FindMatches GameObject
+                findMatches.FindAllMatches();
+            } 
         }
         else
         {
@@ -133,9 +133,9 @@ public class ShapeTile : MonoBehaviour
             if (board.allShapeTiles[column, row] != this.gameObject)
             {
                 board.allShapeTiles[column, row] = this.gameObject;
+                // Call the FindAllMatches function on the FindMatches GameObject
+                findMatches.FindAllMatches();
             }
-            // Call the FindAllMatches function on the FindMatches GameObject
-            findMatches.FindAllMatches();
         }
         else
         {
