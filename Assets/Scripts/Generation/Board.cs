@@ -25,6 +25,12 @@ public class TileType
     public int y; // Y value in grid
     public TileKind tileKind;
 }
+[System.Serializable]
+public class MatchType
+{
+    public int type;
+    public string colour;
+}
 
 public class Board : MonoBehaviour
 {
@@ -50,6 +56,7 @@ public class Board : MonoBehaviour
     public ShapeTile currentTile;
     private FindMatches findMatches;
     private ScoreManager scoreManager;
+    public MatchType matchType;
     [Space(5)]
     [Header("Score")]
     public int basePieceValue = 20;
@@ -61,6 +68,7 @@ public class Board : MonoBehaviour
     public float refillDelay = 0.5f;
     [Space(5)]
     private SoundManager soundManager;
+
 
     private void Awake()
     {
@@ -251,15 +259,23 @@ public class Board : MonoBehaviour
     }
 
     // Check to see how many pieces in list are in one row or column
-    private int ColumnOrRow()
+    private MatchType ColumnOrRow()
     {
         // make a copy of the current matches
         List<GameObject> matchCopy = findMatches.currentMatches as List<GameObject>;
+
+        matchType.type = 0;
+        matchType.colour = "";
+
         // cycle through all of matchCopy and decide if a bombs needs to be made
         for (int i = 0; i < matchCopy.Count; i++)
         {
             // store the spaeTile[i]
             ShapeTile thisTile = matchCopy[i].GetComponent<ShapeTile>();
+
+            // Set a tenp variable colour equal to the matchCopy[i]'s tag
+            string colour = matchCopy[i].tag;
+
             // store the column and row
             int column = thisTile.column;
             int row = thisTile.row;
@@ -276,12 +292,12 @@ public class Board : MonoBehaviour
                     continue;
                 }
                 // check to see if it's a column match
-                if (nextTile.column == thisTile.column && nextTile.CompareTag(thisTile.tag))
+                if (nextTile.column == thisTile.column && nextTile.tag == colour)
                 {
                     columnMatch++;
                 }
                 // check to see if it's a row match
-                if (nextTile.row == thisTile.row && nextTile.CompareTag(thisTile.tag))
+                if (nextTile.row == thisTile.row && nextTile.tag == colour)
                 {
                     rowMatch++;
                 }
@@ -289,21 +305,29 @@ public class Board : MonoBehaviour
             // return 1 if its colour bomb
             if (columnMatch == 4 || rowMatch == 4)
             {
-                return 1;
-            }
+                matchType.type = 1;
+                matchType.colour = colour;
+                return matchType;
             // return 2 if its adjacent
-            if (columnMatch == 2 && rowMatch == 2)
-            {
-                return 2;
             }
-            // return 3 if its column or row
-            if (columnMatch == 3 || rowMatch == 3)
+            else if (columnMatch == 2 && rowMatch == 2)
             {
-                return 3;
+                matchType.type = 2;
+                matchType.colour = colour;
+                return matchType;
+            // return 3 if its column or row
+            }
+            else if (columnMatch == 3 || rowMatch == 3)
+            {
+                matchType.type = 3;
+                matchType.colour = colour;
+                return matchType;
             }
         }
 
-        return 0;
+        matchType.type = 0;
+        matchType.colour = "";
+        return matchType;
         #region OLD CODE
         /*
         int numberHorizontal = 0;
@@ -337,74 +361,59 @@ public class Board : MonoBehaviour
         if (findMatches.currentMatches.Count > 3)
         {
             // what type of match has been made
-            int typeOfMatch = ColumnOrRow();
-            if (typeOfMatch == 1)
+            MatchType typeOfMatch = ColumnOrRow();
+            if (typeOfMatch.type == 1)
             {
                 // Make a colour bomb
                 // Is the current tile matched?
                 // Unmatch it and turn it into a colour bomb
-                if (currentTile != null)
+                if (currentTile != null && currentTile.isMatched && currentTile.tag == typeOfMatch.colour)
                 {
-                    if (currentTile.isMatched)
+                    
+                        currentTile.isMatched = false;
+                        currentTile.MakeColourBomb();
+                }
+                else
+                {
+                    if (currentTile.otherShapeTile != null)
                     {
-                        if (!currentTile.isColourBomb)
+                        ShapeTile otherTile = currentTile.otherShapeTile.GetComponent<ShapeTile>();
+                        if (otherTile.isMatched && otherTile.tag == typeOfMatch.colour)
                         {
-                            currentTile.isMatched = false;
-                            currentTile.MakeColourBomb();
-                        }
-                    }
-                    else
-                    {
-                        if (currentTile.otherShapeTile != null)
-                        {
-                            ShapeTile otherTile = currentTile.otherShapeTile.GetComponent<ShapeTile>();
-                            if (otherTile.isMatched)
-                            {
-                                if (!otherTile.isColourBomb)
-                                {
-                                    otherTile.isMatched = false;
-                                    otherTile.MakeColourBomb();
-                                }
-                            }
+                                otherTile.isMatched = false;
+                                otherTile.MakeColourBomb();
                         }
                     }
                 }
             }
-            else if (typeOfMatch == 2)
+        
+            else if (typeOfMatch.type == 2)
             {
                 // Make an adjacent bomb
                 // Is the current tile matched?
                 // Unmatch it and turn it into a colour bomb
-                if (currentTile != null)
+                if (currentTile != null && currentTile.isMatched && currentTile.tag == typeOfMatch.colour)
                 {
-                    if (currentTile.isMatched)
+                    currentTile.isMatched = false;
+                    currentTile.MakeAdjacentBomb();
+                        
+                }
+                else
+                {
+                    if (currentTile.otherShapeTile != null)
                     {
-                        if (!currentTile.isAdjacentBomb)
+                        ShapeTile otherTile = currentTile.otherShapeTile.GetComponent<ShapeTile>();
+                        if (otherTile.isMatched && otherTile.tag == typeOfMatch.colour)
                         {
-                            currentTile.isMatched = false;
-                            currentTile.MakeAdjacentBomb();
-                        }
-                    }
-                    else
-                    {
-                        if (currentTile.otherShapeTile != null)
-                        {
-                            ShapeTile otherTile = currentTile.otherShapeTile.GetComponent<ShapeTile>();
-                            if (otherTile.isMatched)
-                            {
-                                if (!otherTile.isAdjacentBomb)
-                                {
-                                    otherTile.isMatched = false;
-                                    otherTile.MakeAdjacentBomb();
-                                }
-                            }
+                            otherTile.isMatched = false;
+                            otherTile.MakeAdjacentBomb();
                         }
                     }
                 }
             }
-            else if (typeOfMatch == 3)
+            else if (typeOfMatch.type == 3)
             {
-                findMatches.CheckBombs();
+                findMatches.CheckBombs(matchType);
             }
 
             #region OLD CODE
@@ -663,6 +672,7 @@ public class Board : MonoBehaviour
     // Check to see if there are anymore matches on the board happening right after a player match
     private bool MatchesOnBoard()
     {
+        findMatches.FindAllMatches();
         // Cycle through the width
         for (int i = 0; i < width; i++)
         {
@@ -699,10 +709,11 @@ public class Board : MonoBehaviour
             // Then call the DestroyMatches function
             DestroyMatches();
             // Wait for half a second
-            yield return new WaitForSeconds(2 * refillDelay);
+            yield break;
+            //yield return new WaitForSeconds(2 * refillDelay);
         }
         // Clear the current matches list to prevent any mistaken match 7 column/ row bombs
-        findMatches.currentMatches.Clear();
+        //findMatches.currentMatches.Clear();
         // Wait for half a second
         yield return new WaitForSeconds(refillDelay);
 

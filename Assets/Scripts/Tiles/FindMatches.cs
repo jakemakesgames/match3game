@@ -276,13 +276,13 @@ public class FindMatches : MonoBehaviour
     }
 
     // Check to make bombs
-    public void CheckBombs()
+    public void CheckBombs(MatchType matchType)
     {
         // Did the player move something
         if (board.currentTile != null)
         {
             // Is the piece they moved matched?
-            if (board.currentTile.isMatched)
+            if (board.currentTile.isMatched && board.currentTile.tag == matchType.colour)
             {
                 // Make it unmatched
                 board.currentTile.isMatched = false;
@@ -324,7 +324,7 @@ public class FindMatches : MonoBehaviour
             else if (board.currentTile.otherShapeTile != null)
             {
                 ShapeTile otherTile = board.currentTile.otherShapeTile.GetComponent<ShapeTile>();
-                if (otherTile.isMatched)
+                if (otherTile.isMatched && otherTile.tag == matchType.colour)
                 {
                     otherTile.isMatched = false;
 
