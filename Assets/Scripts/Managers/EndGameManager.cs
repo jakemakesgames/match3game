@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public enum GameType
 {
@@ -24,7 +25,8 @@ public class EndGameManager : MonoBehaviour
     public EndGameRequirements requirements; // A reference to the EndGameRequirements Class
     public GameObject movesLabel; // A reference to the Moves Label UI element
     public GameObject timeLabel; // A reference to the Time Label UI element
-    public Text counterText; // The moves/ time counter text
+    public TMP_Text counterText;
+    //public Text counterText; // The moves/ time counter text
     public int currentCounterValue; // The current counter value
     private float timerSeconds; // The countdown timer (for time label)
 

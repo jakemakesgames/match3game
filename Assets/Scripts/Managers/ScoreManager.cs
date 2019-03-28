@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ScoreManager : MonoBehaviour
 {
     private Board board;
 
-    public Text scoreText;
+    public TMP_Text scoreText;
+    //public Text scoreText;
     public int score;
     public Image scoreBar;
 
