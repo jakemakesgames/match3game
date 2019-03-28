@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class LevelButton : MonoBehaviour
 {
@@ -15,7 +16,8 @@ public class LevelButton : MonoBehaviour
     private Button myButton; // get a reference to the button
     [Space(5)]
     public Image[] stars; // get a reference to the stars
-    public Text levelNumberText; // get a reference to the level number text
+    public TMP_Text levelNumberText;
+    //public Text levelNumberText; // get a reference to the level number text
     public int level; // keep track of what level this belongs to
     public GameObject confirmPanel; // get a reference to the confirm panel
 

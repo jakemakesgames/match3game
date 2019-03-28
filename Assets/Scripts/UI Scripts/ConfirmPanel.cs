@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine.SceneManagement;
 
 public class ConfirmPanel : MonoBehaviour
@@ -16,8 +17,10 @@ public class ConfirmPanel : MonoBehaviour
 
     [Header("UI")]
     public Image[] stars; // get a reference to the stars
-    public Text hiScoreText;
-    public Text starText;
+    //public Text highScoreText;
+    //public Text starText;
+    public TMP_Text highScoreText;
+    public TMP_Text starText;
 
     // Start is called before the first frame update
     void OnEnable()
@@ -42,7 +45,7 @@ public class ConfirmPanel : MonoBehaviour
 
     void SetText()
     {
-        hiScoreText.text = "" + hiScore;
+        highScoreText.text = "" + hiScore;
         starText.text = "" + starsActive + "/3";
     }
 
