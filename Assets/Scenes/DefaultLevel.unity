@@ -1105,10 +1105,10 @@ MonoBehaviour:
     m_Top: 28
     m_Bottom: 25
   m_ChildAlignment: 4
-  m_Spacing: 23
+  m_Spacing: 38.5
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
+  m_ChildControlWidth: 1
   m_ChildControlHeight: 1
 --- !u!114 &541251482
 MonoBehaviour:
@@ -4026,8 +4026,6 @@ MonoBehaviour:
   - {fileID: 6111634972526330764, guid: 61e3522fdd0dc7b4eba96a6756795b0d, type: 3}
   - {fileID: 48000571917110242, guid: 2d47b469b228e1d41b2210fd804771b7, type: 3}
   - {fileID: 3262339209531394532, guid: 306d039e837a77b419dbe57234df17e3, type: 3}
-  - {fileID: 6036299159938204525, guid: ed710e3f1f9f9b442a78c5d7189f0115, type: 3}
-  - {fileID: 6036299159938204525, guid: ed710e3f1f9f9b442a78c5d7189f0115, type: 3}
   - {fileID: 6036299159938204525, guid: ed710e3f1f9f9b442a78c5d7189f0115, type: 3}
   boardLayout: []
   destroyEffect: {fileID: 1700846870748151439, guid: 384ef02bbcf352949aa371db91cb8345,

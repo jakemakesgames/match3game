@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2fe31a47b1830074eac313de446121c7, type: 3}
-  m_Name: Level2
+  m_Name: Level4
   m_EditorClassIdentifier: 
   width: 5
   height: 5
@@ -20,16 +20,16 @@ MonoBehaviour:
   - {fileID: 3262339209531394532, guid: 306d039e837a77b419dbe57234df17e3, type: 3}
   - {fileID: 6036299159938204525, guid: ed710e3f1f9f9b442a78c5d7189f0115, type: 3}
   - {fileID: 3239966394059518891, guid: 586a28d50c9cdb149803772e1db07b07, type: 3}
-  scoreGoals: 64000000c80000002c010000
+  scoreGoals: c80000002c01000090010000
   endGameRequirements:
-    gameType: 0
-    counterValue: 30
+    gameType: 1
+    counterValue: 100
   levelGoals:
-  - numberNeeded: 5
+  - numberNeeded: 6
+    numberCollected: 0
+    goalSprite: {fileID: 21300002, guid: aecb31e4cdbb08040913a0ecaa62c5a2, type: 3}
+    matchValue: CircleTile
+  - numberNeeded: 6
     numberCollected: 0
     goalSprite: {fileID: 21300006, guid: aecb31e4cdbb08040913a0ecaa62c5a2, type: 3}
     matchValue: TriangleTile
-  - numberNeeded: 5
-    numberCollected: 0
-    goalSprite: {fileID: 21300022, guid: aecb31e4cdbb08040913a0ecaa62c5a2, type: 3}
-    matchValue: DiamondTile
