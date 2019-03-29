@@ -27,9 +27,9 @@ MonoBehaviour:
   levelGoals:
   - numberNeeded: 5
     numberCollected: 0
-    goalSprite: {fileID: 21300000, guid: 32b32906308606f4a8fe63bdbbbd670f, type: 3}
+    goalSprite: {fileID: 21300002, guid: aecb31e4cdbb08040913a0ecaa62c5a2, type: 3}
     matchValue: CircleTile
   - numberNeeded: 5
     numberCollected: 0
-    goalSprite: {fileID: 21300000, guid: 0174af388bc5f5a41ac4456a9be2d3c6, type: 3}
+    goalSprite: {fileID: 21300000, guid: aecb31e4cdbb08040913a0ecaa62c5a2, type: 3}
     matchValue: SquareTile
