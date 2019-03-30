@@ -4016,12 +4016,6 @@ MonoBehaviour:
   width: 6
   height: 8
   offSet: 20
-  backgroundTilePrefab: {fileID: 859015979769944645, guid: 1d3470736960ff341a4f3b79ad4ebd4b,
-    type: 3}
-  breakableTilePrefab: {fileID: 3772718299017064638, guid: e3912b4aa7469394b87d0858b1055604,
-    type: 3}
-  lockedTilePrefabs: {fileID: 4167717731532358405, guid: 611ca5294b71e8440ab094b2aeadf470,
-    type: 3}
   shapeTiles:
   - {fileID: 3243907077133750565, guid: 9cc3cce4a0af266448cbcdc276cf3c2b, type: 3}
   - {fileID: 3239966394059518891, guid: 586a28d50c9cdb149803772e1db07b07, type: 3}
@@ -4029,6 +4023,14 @@ MonoBehaviour:
   - {fileID: 48000571917110242, guid: 2d47b469b228e1d41b2210fd804771b7, type: 3}
   - {fileID: 3262339209531394532, guid: 306d039e837a77b419dbe57234df17e3, type: 3}
   - {fileID: 6036299159938204525, guid: ed710e3f1f9f9b442a78c5d7189f0115, type: 3}
+  backgroundTilePrefab: {fileID: 859015979769944645, guid: 1d3470736960ff341a4f3b79ad4ebd4b,
+    type: 3}
+  breakableTilePrefab: {fileID: 3772718299017064638, guid: e3912b4aa7469394b87d0858b1055604,
+    type: 3}
+  lockedTilePrefab: {fileID: 4167717731532358405, guid: 611ca5294b71e8440ab094b2aeadf470,
+    type: 3}
+  concreteTilePrefab: {fileID: 6417197473520516513, guid: 08247b4a577b8f646a16d0a221508ba7,
+    type: 3}
   boardLayout: []
   destroyEffect: {fileID: 1700846870748151439, guid: 384ef02bbcf352949aa371db91cb8345,
     type: 3}

@@ -47,23 +47,32 @@ public class Board : MonoBehaviour
     public int height; // The height of the board
     public int offSet; // The offset which the tiles are being created
     [Space(5)]
-    [Header("Tiles")]
+    [Header("Shape Tiles")]
+    public GameObject[] shapeTiles; // The shape tiles to be instantiated
+    [Header("Obstacle Tiles")]
     public GameObject backgroundTilePrefab; // The Background tile to be instantiated
     public GameObject breakableTilePrefab; // The breakable tile to be instantiated
-    public GameObject lockedTilePrefabs; // The locked tile to be instantiated
-
-    public GameObject[] shapeTiles; // The shape tiles to be instantiated
+    public GameObject lockedTilePrefab; // The locked tile to be instantiated
+    public GameObject concreteTilePrefab; // The concrete tile to be instantiated
+    [Header("Board Layout Array")]
     public TileType[] boardLayout;
+    [Space(5)]
+    [Header("Destroy Effect")]
     public GameObject destroyEffect;
-
+    [Space(5)]
+    [Header("Obstacle Tile Arrays")]
     private bool[,] blankSpaces;  // An array of all of the background tiles
     public BackgroundTile[,] breakableTiles; // An array all of the breakable tiles
     public BackgroundTile[,] lockedTiles; // An array of the locked tiles
+    public BackgroundTile[,] concreteTiles; // An array of the concrete tiles
     public GameObject[,] allShapeTiles; // An array of all of the shape tiles
     public ShapeTile currentTile;
 
     private FindMatches findMatches;
     private ScoreManager scoreManager;
+
+    [Space(5)]
+    [Header("Match Type")]
     public MatchType matchType;
     [Space(5)]
     [Header("Score")]
@@ -120,7 +129,9 @@ public class Board : MonoBehaviour
         
         blankSpaces = new bool [width, height]; // Initialise the blankSpaces array
         breakableTiles = new BackgroundTile[width, height]; // Initialise the breakableTiles array
-        lockedTiles = new BackgroundTile[width, height]; // Initials the lockedTiles array
+        lockedTiles = new BackgroundTile[width, height]; // Initialise the lockedTiles array
+        concreteTiles = new BackgroundTile[width, height]; // Initialise the concreteTiles array
+
         allShapeTiles = new GameObject[width, height]; // Initialise the allShapeTiles array
 
         SetUp(); // Call the SetUp function
@@ -168,8 +179,26 @@ public class Board : MonoBehaviour
                 // Create a temporary position
                 Vector2 tempPosition = new Vector2(boardLayout[i].x, boardLayout[i].y);
                 // create a locked tile at that position
-                GameObject tile = Instantiate(lockedTilePrefabs, tempPosition, Quaternion.identity);
+                GameObject tile = Instantiate(lockedTilePrefab, tempPosition, Quaternion.identity);
                 lockedTiles[boardLayout[i].x, boardLayout[i].y] = tile.GetComponent<BackgroundTile>();
+            }
+        }
+    }
+
+    // Generate Concrete Tiles
+    public void GenerateConcreteTiles()
+    {
+        // Look at all the tiles in the layout
+        for (int i = 0; i < boardLayout.Length; i++)
+        {
+            // If a tile is a locked tile
+            if (boardLayout[i].tileKind == TileKind.Concrete)
+            {
+                // Create a temporary position
+                Vector2 tempPosition = new Vector2(boardLayout[i].x, boardLayout[i].y);
+                // create a locked tile at that position
+                GameObject tile = Instantiate(concreteTilePrefab, tempPosition, Quaternion.identity);
+                concreteTiles[boardLayout[i].x, boardLayout[i].y] = tile.GetComponent<BackgroundTile>();
             }
         }
     }
@@ -180,13 +209,14 @@ public class Board : MonoBehaviour
         GenerateBlankSpaces(); // Generate the blank spaces
         GenerateBreakableTiles(); // Generate the breakable tiles
         GenerateLockedTiles(); // Generate the locked tiles
+        GenerateConcreteTiles(); // Generate the concrete tiles
         // Cycle through the Width and Height and Instantiate a Tile Prefab at
         // every position
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
             {
-                if (!blankSpaces[i, j])
+                if (!blankSpaces[i, j] && !concreteTiles[i, j])
                 {
                     // Create a new temporary variable - a Vector2 for the W & H pos
                     Vector2 tempPosition = new Vector2(i, j + offSet);
@@ -553,6 +583,8 @@ public class Board : MonoBehaviour
                 }
             }
 
+            DamageConcrete(column, row);
+
             // Check for goals
             if (goalManager != null)
             {
@@ -613,6 +645,67 @@ public class Board : MonoBehaviour
         
         //StartCoroutine(DecreaseRowCo());
         StartCoroutine(DecreaseRowCo2());
+    }
+
+    private void DamageConcrete(int column, int row)
+    {
+        // if the column we're checking is greater than 0
+        if (column > 0)
+        {
+            // if the concrete tiles column is valued at column - 1
+            if (concreteTiles[column - 1, row])
+            {
+                // deal X damage to the concrete tile
+                concreteTiles[column - 1, row].TakeDamage(1);
+                // if the concrete tile's hp is less than or equal to 0, set it to null
+                if (concreteTiles[column - 1, row].hitPoints <= 0)
+                {
+                    concreteTiles[column - 1, row] = null;
+                }
+            }
+        }
+        if (column < width - 1)
+        {
+            // if the concrete tiles column is valued at column - 1
+            if (concreteTiles[column + 1, row])
+            {
+                // deal X damage to the concrete tile
+                concreteTiles[column + 1, row].TakeDamage(1);
+                // if the concrete tile's hp is less than or equal to 0, set it to null
+                if (concreteTiles[column + 1, row].hitPoints <= 0)
+                {
+                    concreteTiles[column + 1, row] = null;
+                }
+            }
+        }
+        if (row > 0)
+        {
+            // if the concrete tiles column is valued at column - 1
+            if (concreteTiles[column, row - 1])
+            {
+                // deal X damage to the concrete tile
+                concreteTiles[column, row - 1].TakeDamage(1);
+                // if the concrete tile's hp is less than or equal to 0, set it to null
+                if (concreteTiles[column, row - 1].hitPoints <= 0)
+                {
+                    concreteTiles[column, row - 1] = null;
+                }
+            }
+        }
+        if (row < height - 1)
+        {
+            // if the concrete tiles column is valued at column - 1
+            if (concreteTiles[column, row + 1])
+            {
+                // deal X damage to the concrete tile
+                concreteTiles[column, row + 1].TakeDamage(1);
+                // if the concrete tile's hp is less than or equal to 0, set it to null
+                if (concreteTiles[column, row + 1].hitPoints <= 0)
+                {
+                    concreteTiles[column, row + 1] = null;
+                }
+            }
+        }
     }
 
     private IEnumerator DecreaseRowCo2()
