@@ -15,6 +15,9 @@ public enum TileKind
 {
     Breakable,
     Blank,
+    Locked,
+    Concrete,
+    Slime,
     Normal
 }
 
@@ -47,13 +50,18 @@ public class Board : MonoBehaviour
     [Header("Tiles")]
     public GameObject backgroundTilePrefab; // The Background tile to be instantiated
     public GameObject breakableTilePrefab; // The breakable tile to be instantiated
+    public GameObject lockedTilePrefabs; // The locked tile to be instantiated
+
     public GameObject[] shapeTiles; // The shape tiles to be instantiated
     public TileType[] boardLayout;
     public GameObject destroyEffect;
+
     private bool[,] blankSpaces;  // An array of all of the background tiles
-    private BackgroundTile[,] breakableTiles; // An array all of the breakable tiles
+    public BackgroundTile[,] breakableTiles; // An array all of the breakable tiles
+    public BackgroundTile[,] lockedTiles; // An array of the locked tiles
     public GameObject[,] allShapeTiles; // An array of all of the shape tiles
     public ShapeTile currentTile;
+
     private FindMatches findMatches;
     private ScoreManager scoreManager;
     public MatchType matchType;
@@ -109,9 +117,12 @@ public class Board : MonoBehaviour
         findMatches = FindObjectOfType<FindMatches>(); // Initialise the FindMatches component
         soundManager = FindObjectOfType<SoundManager>(); // Initialise the Sound Manager
         scoreManager = FindObjectOfType<ScoreManager>(); // Initialise the Score Manager
-        breakableTiles = new BackgroundTile[width, height]; // Initialise the breakableTiles array
+        
         blankSpaces = new bool [width, height]; // Initialise the blankSpaces array
+        breakableTiles = new BackgroundTile[width, height]; // Initialise the breakableTiles array
+        lockedTiles = new BackgroundTile[width, height]; // Initials the lockedTiles array
         allShapeTiles = new GameObject[width, height]; // Initialise the allShapeTiles array
+
         SetUp(); // Call the SetUp function
     }
 
@@ -145,11 +156,30 @@ public class Board : MonoBehaviour
         }
     }
 
+    // Generate Locked Tiles
+    public void GenerateLockedTiles()
+    {
+        // Look at all the tiles in the layout
+        for (int i = 0; i < boardLayout.Length; i++)
+        {
+            // If a tile is a locked tile
+            if (boardLayout[i].tileKind == TileKind.Locked)
+            {
+                // Create a temporary position
+                Vector2 tempPosition = new Vector2(boardLayout[i].x, boardLayout[i].y);
+                // create a locked tile at that position
+                GameObject tile = Instantiate(lockedTilePrefabs, tempPosition, Quaternion.identity);
+                lockedTiles[boardLayout[i].x, boardLayout[i].y] = tile.GetComponent<BackgroundTile>();
+            }
+        }
+    }
+
     // SetUp the board
     private void SetUp()
     {
         GenerateBlankSpaces(); // Generate the blank spaces
         GenerateBreakableTiles(); // Generate the breakable tiles
+        GenerateLockedTiles(); // Generate the locked tiles
         // Cycle through the Width and Height and Instantiate a Tile Prefab at
         // every position
         for (int i = 0; i < width; i++)
@@ -509,6 +539,17 @@ public class Board : MonoBehaviour
                 {
                     // remove from array
                     breakableTiles[column, row] = null;
+                }
+            }
+
+            if (lockedTiles[column, row] != null)
+            {
+                // if it does, give one damage
+                lockedTiles[column, row].TakeDamage(1); // DONT HARD CODE THIS VALUE 
+                if (lockedTiles[column, row].hitPoints <= 0)
+                {
+                    // remove from array
+                    lockedTiles[column, row] = null;
                 }
             }
 

@@ -78,7 +78,7 @@ public class ShapeTile : MonoBehaviour
 
     // This is for testing/ debug only
     // Turn any piece into a row or column bomb at will
-    void OnMouseOver()
+    /*void OnMouseOver()
     {
         if (Input.GetMouseButtonDown(1))
         {
@@ -87,6 +87,7 @@ public class ShapeTile : MonoBehaviour
             adjacent.transform.parent = this.transform;
         }
     }
+    */
 
     void Update()
     {
@@ -202,19 +203,25 @@ public class ShapeTile : MonoBehaviour
         previousRow = row;
         previousColumn = column;
 
-        if (otherShapeTile != null)
+        if (board.lockedTiles[column, row] == null && board.lockedTiles[column + (int)direction.x, row + (int)direction.y] == null)
         {
-            otherShapeTile.GetComponent<ShapeTile>().column += -1 * (int)direction.x;
-            otherShapeTile.GetComponent<ShapeTile>().row += -1 * (int)direction.y;
-            column += (int)direction.x;
-            row += (int)direction.y;
-            StartCoroutine(CheckMoveCo());
+            if (otherShapeTile != null)
+            {
+                otherShapeTile.GetComponent<ShapeTile>().column += -1 * (int)direction.x;
+                otherShapeTile.GetComponent<ShapeTile>().row += -1 * (int)direction.y;
+                column += (int)direction.x;
+                row += (int)direction.y;
+                StartCoroutine(CheckMoveCo());
+            }
+            else
+            {
+                board.currentState = GameState.move;
+            }
         }
         else
         {
             board.currentState = GameState.move;
         }
-
     }
 
     void MovePieces()
