@@ -13,6 +13,7 @@ TagManager:
   - ColourBombTile
   - BreakableTile
   - Board
+  - SlimeTile
   layers:
   - Default
   - TransparentFX
