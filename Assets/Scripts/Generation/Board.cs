@@ -951,8 +951,12 @@ public class Board : MonoBehaviour
             Debug.Log("DEADLOCKED!");
         }
 
-        // Set the current game state to move
-        currentState = GameState.move;
+        if (currentState != GameState.pause)
+        {
+            // Set the current game state to move
+            currentState = GameState.move;
+        }
+        
         makeSlime = true;
         // Reset the streak value
         streakValue = 1;
