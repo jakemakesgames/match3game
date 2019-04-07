@@ -96,4 +96,9 @@ public class GameData : MonoBehaviour
         }
         
     }
+
+    private void Update()
+    {
+        
+    }
 }
