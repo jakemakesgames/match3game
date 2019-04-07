@@ -10,42 +10,38 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2fe31a47b1830074eac313de446121c7, type: 3}
-  m_Name: Level9
+  m_Name: Level11
   m_EditorClassIdentifier: 
-  width: 6
-  height: 6
+  width: 7
+  height: 7
   boardLayout:
   - x: 0
-    y: 0
+    y: 4
     tileKind: 1
-  - x: 5
-    y: 0
-    tileKind: 1
-  - x: 0
-    y: 5
-    tileKind: 1
-  - x: 5
-    y: 5
+  - x: 6
+    y: 4
     tileKind: 1
   shapeTiles:
   - {fileID: 3243907077133750565, guid: 9cc3cce4a0af266448cbcdc276cf3c2b, type: 3}
   - {fileID: 3262339209531394532, guid: 306d039e837a77b419dbe57234df17e3, type: 3}
   - {fileID: 6036299159938204525, guid: ed710e3f1f9f9b442a78c5d7189f0115, type: 3}
   - {fileID: 3239966394059518891, guid: 586a28d50c9cdb149803772e1db07b07, type: 3}
-  scoreGoals: f401000058020000bc020000
+  - {fileID: 6111634972526330764, guid: 61e3522fdd0dc7b4eba96a6756795b0d, type: 3}
+  - {fileID: 48000571917110242, guid: 2d47b469b228e1d41b2210fd804771b7, type: 3}
+  scoreGoals: 260200008a020000ee020000
   endGameRequirements:
-    gameType: 1
-    counterValue: 90
+    gameType: 0
+    counterValue: 20
   levelGoals:
+  - numberNeeded: 10
+    numberCollected: 0
+    goalSprite: {fileID: 21300000, guid: aecb31e4cdbb08040913a0ecaa62c5a2, type: 3}
+    matchValue: SquareTile
   - numberNeeded: 10
     numberCollected: 0
     goalSprite: {fileID: 21300002, guid: aecb31e4cdbb08040913a0ecaa62c5a2, type: 3}
     matchValue: CircleTile
-  - numberNeeded: 6
+  - numberNeeded: 10
     numberCollected: 0
-    goalSprite: {fileID: 21300000, guid: aecb31e4cdbb08040913a0ecaa62c5a2, type: 3}
-    matchValue: SquareTile
-  - numberNeeded: 6
-    numberCollected: 0
-    goalSprite: {fileID: 21300006, guid: aecb31e4cdbb08040913a0ecaa62c5a2, type: 3}
-    matchValue: TriangleTile
+    goalSprite: {fileID: 21300008, guid: aecb31e4cdbb08040913a0ecaa62c5a2, type: 3}
+    matchValue: HexagonTile

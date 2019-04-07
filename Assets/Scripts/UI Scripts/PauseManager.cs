@@ -14,7 +14,7 @@ public class PauseManager : MonoBehaviour
     public Image soundButton;
     public Sprite soundOn;
     public Sprite soundOff;
-    public TMP_Text soundText;
+    //public TMP_Text soundText;
 
     void Start()
     {
@@ -25,12 +25,12 @@ public class PauseManager : MonoBehaviour
             if (PlayerPrefs.GetInt("Sound") == 0)
             {
                 soundButton.sprite = soundOff;
-                soundText.text = "Off".ToString();
+                //oundText.text = "Off".ToString();
             }
             else
             {
                 soundButton.sprite = soundOn;
-                soundText.text = "On".ToString();
+                //soundText.text = "On".ToString();
             }
 
         }
@@ -65,19 +65,20 @@ public class PauseManager : MonoBehaviour
             if (PlayerPrefs.GetInt("Sound") == 0)
             {
                 soundButton.sprite = soundOn;
-                soundText.text = "On".ToString();
+                //soundText.text = "On".ToString();
                 PlayerPrefs.SetInt("Sound", 1);
             }
             else
             {
                 soundButton.sprite = soundOff;
-                soundText.text = "Off".ToString();
+                //soundText.text = "Off".ToString();
                 PlayerPrefs.SetInt("Sound", 0);
             }
         }
         else
         {
             soundButton.sprite = soundOff;
+            PlayerPrefs.SetInt("Sound", 1);
         }
     }
 

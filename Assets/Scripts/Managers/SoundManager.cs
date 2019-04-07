@@ -10,9 +10,23 @@ public class SoundManager : MonoBehaviour
     // Method to play a random destroy noise
     public void PlayRandomDestroyNoise()
     {
-        // Choose a random number
-        int clipToPlay = Random.Range(0, destroyNoise.Length);
-        // Play that clip
-        destroyNoise[clipToPlay].Play();
+        // check what player prefs sound is set at
+        if (PlayerPrefs.HasKey("Sound"))
+        {
+            if (PlayerPrefs.GetInt("Sound") == 1)
+            {
+                // Choose a random number
+                int clipToPlay = Random.Range(0, destroyNoise.Length);
+                // Play that clip
+                destroyNoise[clipToPlay].Play();
+            }
+        }
+        else
+        {
+            // Choose a random number
+            int clipToPlay = Random.Range(0, destroyNoise.Length);
+            // Play that clip
+            destroyNoise[clipToPlay].Play();
+        }  
     }
 }
